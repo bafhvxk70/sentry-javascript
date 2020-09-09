@@ -1,5 +1,5 @@
 {
-  "name": "@beidou/browser",
+  "name": "@beidou1/browser",
   "version": "1.0.1-alpha.0",
   "description": "Official Beidou SDK for browsers",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
@@ -16,9 +16,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@beidou/core": "^1.0.1-alpha.0",
-    "@beidou/types": "5.22.3",
-    "@beidou/utils": "^1.0.1-alpha.0",
+    "@beidou1/core": "1.0.0",
+    "@beidou1/types": "1.0.0",
+    "@beidou1/utils": "1.0.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {

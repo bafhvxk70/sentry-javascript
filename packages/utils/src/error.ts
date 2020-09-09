@@ -12,3 +12,7 @@ export class BeidouError extends Error {
     setPrototypeOf(this, new.target.prototype);
   }
 }
+
+export const foo = () => {
+  return 'utils'
+}

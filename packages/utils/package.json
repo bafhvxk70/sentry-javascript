@@ -1,6 +1,6 @@
 {
-  "name": "@beidou/utils",
-  "version": "1.0.1-alpha.0",
+  "name": "@beidou1/utils",
+  "version": "1.0.0",
   "description": "Utilities for all Beidou JavaScript SDKs",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/utils",
@@ -16,11 +16,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@beidou/types": "5.22.3",
+    "@beidou1/types": "1.0.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@beidou-internal/eslint-config-sdk": "^1.0.1-alpha.0",
+    "@beidou1-internal/eslint-config-sdk": "^1.0.1-alpha.0",
     "chai": "^4.1.2",
     "eslint": "7.6.0",
     "jest": "^24.7.1",

@@ -1,5 +1,5 @@
 {
-  "name": "@beidou/hub",
+  "name": "@beidou1/hub",
   "version": "1.0.1-alpha.0",
   "description": "Beidou hub which handles global state managment.",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",

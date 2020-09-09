@@ -1,6 +1,6 @@
 {
-  "name": "@beidou-internal/eslint-config-sdk",
-  "version": "1.0.1-alpha.0",
+  "name": "@beidou1-internal/eslint-config-sdk",
+  "version": "1.0.0",
   "description": "Official Beidou SDK eslint config",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/eslint-config-sdk",
@@ -19,8 +19,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@beidou-internal/eslint-plugin-sdk": "^1.0.1-alpha.0",
-    "@beidou-internal/typescript": "^1.0.1-alpha.0",
+    "@beidou1-internal/eslint-plugin-sdk": "^1.0.1-alpha.0",
+    "@beidou1-internal/typescript": "^1.0.1-alpha.0",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
     "eslint-config-prettier": "^6.11.0",

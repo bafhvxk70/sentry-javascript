@@ -1,5 +1,5 @@
 {
-  "name": "@beidou/integrations",
+  "name": "@beidou1/integrations",
   "version": "1.0.1-alpha.0",
   "description": "Pluggable integrations that can be used to enhance JS SDKs",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
