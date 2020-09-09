@@ -1,6 +1,6 @@
 {
   "name": "@beidou/browser",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "description": "Official Beidou SDK for browsers",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/browser",
@@ -16,13 +16,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@beidou/core": "^1.0.0",
+    "@beidou/core": "^1.0.1-alpha.0",
     "@beidou/types": "5.22.3",
-    "@beidou/utils": "^1.0.0",
+    "@beidou/utils": "^1.0.1-alpha.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@beidou-internal/eslint-config-sdk": "^1.0.0",
+    "@beidou-internal/eslint-config-sdk": "^1.0.1-alpha.0",
     "@types/eslint": "^7.2.0",
     "@types/md5": "2.1.33",
     "btoa": "^1.2.1",

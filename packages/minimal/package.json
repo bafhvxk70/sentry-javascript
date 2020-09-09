@@ -1,6 +1,6 @@
 {
   "name": "@beidou/minimal",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "description": "Beidou minimal library that can be used in other packages",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/minimal",
@@ -16,12 +16,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@beidou/hub": "^1.0.0",
+    "@beidou/hub": "^1.0.1-alpha.0",
     "@beidou/types": "5.22.3",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@beidou-internal/eslint-config-sdk": "^1.0.0",
+    "@beidou-internal/eslint-config-sdk": "^1.0.1-alpha.0",
     "eslint": "7.6.0",
     "jest": "^24.7.1",
     "npm-run-all": "^4.1.2",

@@ -1,6 +1,6 @@
 {
   "name": "@beidou-internal/eslint-plugin-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "description": "Official Beidou SDK eslint plugin",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/eslint-plugin-sdk",
