@@ -12,15 +12,15 @@ export interface Options {
   debug?: boolean;
 
   /**
-   * Specifies whether this SDK should activate and send events to Sentry.
+   * Specifies whether this SDK should activate and send events to Beidou.
    * Disabling the SDK reduces all overhead from instrumentation, collecting
    * breadcrumbs and capturing events. Defaults to true.
    */
   enabled?: boolean;
 
   /**
-   * The Dsn used to connect to Sentry and identify the project. If omitted, the
-   * SDK will not send any data to Sentry.
+   * The Dsn used to connect to Beidou and identify the project. If omitted, the
+   * SDK will not send any data to Beidou.
    */
   dsn?: string;
 
@@ -38,13 +38,13 @@ export interface Options {
   integrations?: Integration[] | ((integrations: Integration[]) => Integration[]);
 
   /**
-   * A pattern for error messages which should not be sent to Sentry.
+   * A pattern for error messages which should not be sent to Beidou.
    * By default, all errors will be sent.
    */
   ignoreErrors?: Array<string | RegExp>;
 
   /**
-   * Transport object that should be used to send events to Sentry
+   * Transport object that should be used to send events to Beidou
    */
   transport?: TransportClass<Transport>;
 
@@ -55,7 +55,7 @@ export interface Options {
 
   /**
    * The release identifier used when uploading respective source maps. Specify
-   * this value to allow Sentry to resolve the correct source maps when
+   * this value to allow Beidou to resolve the correct source maps when
    * processing events.
    */
   release?: string;
@@ -120,7 +120,7 @@ export interface Options {
 
   /**
    * A callback invoked during event submission, allowing to optionally modify
-   * the event before it is sent to Sentry.
+   * the event before it is sent to Beidou.
    *
    * Note that you must return a valid event from this callback. If you do not
    * wish to modify the event, simply return it at the end.

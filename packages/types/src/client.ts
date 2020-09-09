@@ -6,17 +6,17 @@ import { Scope } from './scope';
 import { Severity } from './severity';
 
 /**
- * User-Facing Sentry SDK Client.
+ * User-Facing Beidou SDK Client.
  *
  * This interface contains all methods to interface with the SDK once it has
- * been installed. It allows to send events to Sentry, record breadcrumbs and
+ * been installed. It allows to send events to Beidou, record breadcrumbs and
  * set a context included in every event. Since the SDK mutates its environment,
  * there will only be one instance during runtime.
  *
  */
 export interface Client<O extends Options = Options> {
   /**
-   * Captures an exception event and sends it to Sentry.
+   * Captures an exception event and sends it to Beidou.
    *
    * @param exception An exception-like object.
    * @param hint May contain additional information about the original exception.
@@ -26,9 +26,9 @@ export interface Client<O extends Options = Options> {
   captureException(exception: any, hint?: EventHint, scope?: Scope): string | undefined;
 
   /**
-   * Captures a message event and sends it to Sentry.
+   * Captures a message event and sends it to Beidou.
    *
-   * @param message The message to send to Sentry.
+   * @param message The message to send to Beidou.
    * @param level Define the level of the message.
    * @param hint May contain additional information about the original exception.
    * @param scope An optional scope containing event metadata.
@@ -37,9 +37,9 @@ export interface Client<O extends Options = Options> {
   captureMessage(message: string, level?: Severity, hint?: EventHint, scope?: Scope): string | undefined;
 
   /**
-   * Captures a manually created event and sends it to Sentry.
+   * Captures a manually created event and sends it to Beidou.
    *
-   * @param event The event to send to Sentry.
+   * @param event The event to send to Beidou.
    * @param hint May contain additional information about the original exception.
    * @param scope An optional scope containing event metadata.
    * @returns The event id

@@ -70,7 +70,7 @@ export interface Hub {
   getClient(): Client | undefined;
 
   /**
-   * Captures an exception event and sends it to Sentry.
+   * Captures an exception event and sends it to Beidou.
    *
    * @param exception An exception-like object.
    * @param hint May contain additional information about the original exception.
@@ -79,9 +79,9 @@ export interface Hub {
   captureException(exception: any, hint?: EventHint): string;
 
   /**
-   * Captures a message event and sends it to Sentry.
+   * Captures a message event and sends it to Beidou.
    *
-   * @param message The message to send to Sentry.
+   * @param message The message to send to Beidou.
    * @param level Define the level of the message.
    * @param hint May contain additional information about the original exception.
    * @returns The generated eventId.
@@ -89,9 +89,9 @@ export interface Hub {
   captureMessage(message: string, level?: Severity, hint?: EventHint): string;
 
   /**
-   * Captures a manually created event and sends it to Sentry.
+   * Captures a manually created event and sends it to Beidou.
    *
-   * @param event The event to send to Sentry.
+   * @param event The event to send to Beidou.
    * @param hint May contain additional information about the original exception.
    */
   captureEvent(event: Event, hint?: EventHint): string;
@@ -164,7 +164,7 @@ export interface Hub {
   /**
    * For the duraction of the callback, this hub will be set as the global current Hub.
    * This function is useful if you want to run your own client and hook into an already initialized one
-   * e.g.: Reporting issues to your own sentry when running in your component while still using the users configuration.
+   * e.g.: Reporting issues to your own beidou when running in your component while still using the users configuration.
    */
   run(callback: (hub: Hub) => void): void;
 
@@ -195,7 +195,7 @@ export interface Hub {
    *
    * The transaction must be finished with a call to its `.finish()` method, at
    * which point the transaction with all its finished child spans will be sent to
-   * Sentry.
+   * Beidou.
    *
    * @param context Properties of the new `Transaction`.
    */

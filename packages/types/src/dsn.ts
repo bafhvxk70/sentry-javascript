@@ -1,17 +1,17 @@
-/** Supported Sentry transport protocols in a Dsn. */
+/** Supported Beidou transport protocols in a Dsn. */
 export type DsnProtocol = 'http' | 'https';
 
 /** Primitive components of a Dsn. */
 export interface DsnComponents {
-  /** Protocol used to connect to Sentry. */
+  /** Protocol used to connect to Beidou. */
   protocol: DsnProtocol;
   /** Public authorization key. */
   user: string;
   /** Private authorization key (deprecated, optional). */
   pass?: string;
-  /** Hostname of the Sentry instance. */
+  /** Hostname of the Beidou instance. */
   host: string;
-  /** Port of the Sentry instance. */
+  /** Port of the Beidou instance. */
   port?: string;
   /** Sub path/ */
   path?: string;
@@ -22,7 +22,7 @@ export interface DsnComponents {
 /** Anything that can be parsed into a Dsn. */
 export type DsnLike = string | DsnComponents;
 
-/** The Sentry Dsn, identifying a Sentry instance and project. */
+/** The Beidou Dsn, identifying a Beidou instance and project. */
 export interface Dsn extends DsnComponents {
   /**
    * Renders the string representation of this Dsn.

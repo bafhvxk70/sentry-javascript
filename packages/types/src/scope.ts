@@ -62,7 +62,7 @@ export interface Scope {
 
   /**
    * Sets the fingerprint on the scope to send with the events.
-   * @param fingerprint string[] to group events in Sentry.
+   * @param fingerprint string[] to group events in Beidou.
    */
   setFingerprint(fingerprint: string[]): this;
 

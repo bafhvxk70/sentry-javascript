@@ -1,7 +1,7 @@
 /** JSDoc */
 export interface WrappedFunction extends Function {
   [key: string]: any;
-  __sentry__?: boolean;
-  __sentry_wrapped__?: WrappedFunction;
-  __sentry_original__?: WrappedFunction;
+  __beidou__?: boolean;
+  __beidou_wrapped__?: WrappedFunction;
+  __beidou_original__?: WrappedFunction;
 }

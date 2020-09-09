@@ -2,12 +2,12 @@ import { DsnLike } from './dsn';
 import { Event } from './event';
 import { Response } from './response';
 
-/** Transport used sending data to Sentry */
+/** Transport used sending data to Beidou */
 export interface Transport {
   /**
-   * Sends the body to the Store endpoint in Sentry.
+   * Sends the body to the Store endpoint in Beidou.
    *
-   * @param body String body that should be sent to Sentry.
+   * @param body String body that should be sent to Beidou.
    */
   sendEvent(event: Event): PromiseLike<Response>;
 
@@ -24,7 +24,7 @@ export type TransportClass<T extends Transport> = new (options: TransportOptions
 
 /** JSDoc */
 export interface TransportOptions {
-  /** Sentry DSN */
+  /** Beidou DSN */
   dsn: DsnLike;
   /** Define custom headers */
   headers?: { [key: string]: string };
