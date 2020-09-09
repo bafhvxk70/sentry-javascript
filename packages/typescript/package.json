@@ -1,10 +1,10 @@
 {
-  "name": "@sentry-internal/typescript",
+  "name": "@beidou-internal/typescript",
   "version": "1.0.0",
-  "description": "Typescript configuration used at Sentry",
-  "repository": "git://github.com/getsentry/sentry-javascript.git",
-  "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/typescript",
-  "author": "Sentry",
+  "description": "Typescript configuration used at Beidou",
+  "repository": "git://github.com/getbeidou/beidou-javascript.git",
+  "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/typescript",
+  "author": "Beidou",
   "license": "BSD-3-Clause",
   "private": false,
   "publishConfig": {

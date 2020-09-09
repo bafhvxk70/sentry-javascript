@@ -2,7 +2,7 @@ import { isDOMError, isDOMException, isError, isErrorEvent, isInstanceOf, isPrim
 import { supportsDOMError, supportsDOMException, supportsErrorEvent } from '../src/supports';
 import { SyncPromise } from '../src/syncpromise';
 
-class SentryError extends Error {
+class BeidouError extends Error {
   public name: string;
 
   public constructor(public message: string) {
@@ -35,7 +35,7 @@ describe('isError()', () => {
   test('should work as advertised', () => {
     expect(isError(new Error())).toEqual(true);
     expect(isError(new ReferenceError())).toEqual(true);
-    expect(isError(new SentryError('message'))).toEqual(true);
+    expect(isError(new BeidouError('message'))).toEqual(true);
     expect(isError({})).toEqual(false);
     expect(
       isError({

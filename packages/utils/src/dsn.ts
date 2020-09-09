@@ -1,6 +1,6 @@
-import { DsnComponents, DsnLike, DsnProtocol } from '@sentry/types';
+import { DsnComponents, DsnLike, DsnProtocol } from '@beidou/types';
 
-import { SentryError } from './error';
+import { BeidouError } from './error';
 
 /** Regular expression used to parse a Dsn. */
 const DSN_REGEX = /^(?:(\w+):)\/\/(?:(\w+)(?::(\w+))?@)([\w.-]+)(?::(\d+))?\/(.+)/;
@@ -8,17 +8,17 @@ const DSN_REGEX = /^(?:(\w+):)\/\/(?:(\w+)(?::(\w+))?@)([\w.-]+)(?::(\d+))?\/(.+
 /** Error message */
 const ERROR_MESSAGE = 'Invalid Dsn';
 
-/** The Sentry Dsn, identifying a Sentry instance and project. */
+/** The Beidou Dsn, identifying a Beidou instance and project. */
 export class Dsn implements DsnComponents {
-  /** Protocol used to connect to Sentry. */
+  /** Protocol used to connect to Beidou. */
   public protocol!: DsnProtocol;
   /** Public authorization key. */
   public user!: string;
   /** Private authorization key (deprecated, optional). */
   public pass!: string;
-  /** Hostname of the Sentry instance. */
+  /** Hostname of the Beidou instance. */
   public host!: string;
-  /** Port of the Sentry instance. */
+  /** Port of the Beidou instance. */
   public port!: string;
   /** Path */
   public path!: string;
@@ -58,7 +58,7 @@ export class Dsn implements DsnComponents {
     const match = DSN_REGEX.exec(str);
 
     if (!match) {
-      throw new SentryError(ERROR_MESSAGE);
+      throw new BeidouError(ERROR_MESSAGE);
     }
 
     const [protocol, user, pass = '', host, port = '', lastPath] = match.slice(1);
@@ -96,20 +96,20 @@ export class Dsn implements DsnComponents {
   private _validate(): void {
     ['protocol', 'user', 'host', 'projectId'].forEach(component => {
       if (!this[component as keyof DsnComponents]) {
-        throw new SentryError(`${ERROR_MESSAGE}: ${component} missing`);
+        throw new BeidouError(`${ERROR_MESSAGE}: ${component} missing`);
       }
     });
 
     if (!this.projectId.match(/^\d+$/)) {
-      throw new SentryError(`${ERROR_MESSAGE}: Invalid projectId ${this.projectId}`);
+      throw new BeidouError(`${ERROR_MESSAGE}: Invalid projectId ${this.projectId}`);
     }
 
     if (this.protocol !== 'http' && this.protocol !== 'https') {
-      throw new SentryError(`${ERROR_MESSAGE}: Invalid protocol ${this.protocol}`);
+      throw new BeidouError(`${ERROR_MESSAGE}: Invalid protocol ${this.protocol}`);
     }
 
     if (this.port && isNaN(parseInt(this.port, 10))) {
-      throw new SentryError(`${ERROR_MESSAGE}: Invalid port ${this.port}`);
+      throw new BeidouError(`${ERROR_MESSAGE}: Invalid port ${this.port}`);
     }
   }
 }

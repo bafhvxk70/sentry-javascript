@@ -1,7 +1,7 @@
 import { setPrototypeOf } from './polyfill';
 
-/** An error emitted by Sentry SDKs and related utilities. */
-export class SentryError extends Error {
+/** An error emitted by Beidou SDKs and related utilities. */
+export class BeidouError extends Error {
   /** Display name of this error instance. */
   public name: string;
 

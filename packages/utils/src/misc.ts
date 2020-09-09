@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Event, Integration, StackFrame, WrappedFunction } from '@sentry/types';
+import { Event, Integration, StackFrame, WrappedFunction } from '@beidou/types';
 
 import { isString } from './is';
 import { snipLine } from './string';
 
 /** Internal */
-interface SentryGlobal {
-  Sentry?: {
+interface BeidouGlobal {
+  Beidou?: {
     Integrations?: Integration[];
   };
   SENTRY_ENVIRONMENT?: string;
@@ -48,14 +48,14 @@ const fallbackGlobalObject = {};
  *
  * @returns Global scope object
  */
-export function getGlobalObject<T>(): T & SentryGlobal {
+export function getGlobalObject<T>(): T & BeidouGlobal {
   return (isNodeEnv()
     ? global
     : typeof window !== 'undefined'
-    ? window
-    : typeof self !== 'undefined'
-    ? self
-    : fallbackGlobalObject) as T & SentryGlobal;
+      ? window
+      : typeof self !== 'undefined'
+        ? self
+        : fallbackGlobalObject) as T & BeidouGlobal;
 }
 
 /**
@@ -182,9 +182,9 @@ export function consoleSandbox(callback: () => any): any {
 
   // Restore all wrapped console methods
   levels.forEach(level => {
-    if (level in global.console && (originalConsole[level] as WrappedFunction).__sentry_original__) {
+    if (level in global.console && (originalConsole[level] as WrappedFunction).__beidou_original__) {
       wrappedLevels[level] = originalConsole[level] as WrappedFunction;
-      originalConsole[level] = (originalConsole[level] as WrappedFunction).__sentry_original__;
+      originalConsole[level] = (originalConsole[level] as WrappedFunction).__beidou_original__;
     }
   });
 
@@ -264,7 +264,7 @@ export function htmlTreeAsString(elem: unknown): string {
   } | null;
 
   // try/catch both:
-  // - accessing event.target (see getsentry/raven-js#838, #768)
+  // - accessing event.target (see getbeidou/raven-js#838, #768)
   // - `htmlTreeAsString` because it's complex, and just accessing the DOM incorrectly
   // - can throw an exception in some circumstances.
   try {

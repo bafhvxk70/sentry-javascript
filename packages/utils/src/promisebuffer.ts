@@ -1,4 +1,4 @@
-import { SentryError } from './error';
+import { BeidouError } from './error';
 import { SyncPromise } from './syncpromise';
 
 /** A simple queue that holds promises. */
@@ -23,7 +23,7 @@ export class PromiseBuffer<T> {
    */
   public add(task: PromiseLike<T>): PromiseLike<T> {
     if (!this.isReady()) {
-      return SyncPromise.reject(new SentryError('Not adding Promise due to buffer limit reached.'));
+      return SyncPromise.reject(new BeidouError('Not adding Promise due to buffer limit reached.'));
     }
     if (this._buffer.indexOf(task) === -1) {
       this._buffer.push(task);

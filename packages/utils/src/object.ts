@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ExtendedError, WrappedFunction } from '@sentry/types';
+import { ExtendedError, WrappedFunction } from '@beidou/types';
 
 import { isElement, isError, isEvent, isInstanceOf, isPlainObject, isPrimitive, isSyntheticEvent } from './is';
 import { Memo } from './memo';
@@ -28,14 +28,14 @@ export function fill(source: { [key: string]: any }, name: string, replacement: 
     try {
       wrapped.prototype = wrapped.prototype || {};
       Object.defineProperties(wrapped, {
-        __sentry_original__: {
+        __beidou_original__: {
           enumerable: false,
           value: original,
         },
       });
     } catch (_Oo) {
       // This can throw if multiple fill happens on a global object like XMLHttpRequest
-      // Fixes https://github.com/getsentry/sentry-javascript/issues/2043
+      // Fixes https://github.com/getbeidou/beidou-javascript/issues/2043
     }
   }
 
@@ -106,7 +106,7 @@ function getWalkSource(
 
     source.type = event.type;
 
-    // Accessing event.target can throw (see getsentry/raven-js#838, #768)
+    // Accessing event.target can throw (see getbeidou/raven-js#838, #768)
     try {
       source.target = isElement(event.target)
         ? htmlTreeAsString(event.target)

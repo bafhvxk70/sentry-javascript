@@ -16,7 +16,7 @@ export function truncate(str: string, max: number = 0): string {
 
 /**
  * This is basically just `trim_line` from
- * https://github.com/getsentry/sentry/blob/master/src/sentry/lang/javascript/processor.py#L67
+ * https://github.com/getbeidou/beidou/blob/master/src/beidou/lang/javascript/processor.py#L67
  *
  * @param str An object that contains serializable values
  * @param max Maximum number of characters in truncated string

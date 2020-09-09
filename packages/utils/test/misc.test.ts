@@ -1,4 +1,4 @@
-import { StackFrame } from '@sentry/types';
+import { StackFrame } from '@beidou/types';
 
 import { addContextToFrame, getEventDescription, getGlobalObject, parseRetryAfterHeader } from '../src/misc';
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
-import { WrappedFunction } from '@sentry/types';
+import { WrappedFunction } from '@beidou/types';
 
 import { isInstanceOf, isString } from './is';
 import { logger } from './logger';
@@ -20,7 +20,7 @@ type InstrumentHandlerType =
   | 'dom'
   | 'fetch'
   | 'history'
-  | 'sentry'
+  | 'beidou'
   | 'xhr'
   | 'error'
   | 'unhandledrejection';
@@ -114,13 +114,13 @@ function instrumentConsole(): void {
     return;
   }
 
-  ['debug', 'info', 'warn', 'error', 'log', 'assert'].forEach(function(level: string): void {
+  ['debug', 'info', 'warn', 'error', 'log', 'assert'].forEach(function (level: string): void {
     if (!(level in global.console)) {
       return;
     }
 
-    fill(global.console, level, function(originalConsoleLevel: () => any): Function {
-      return function(...args: any[]): void {
+    fill(global.console, level, function (originalConsoleLevel: () => any): Function {
+      return function (...args: any[]): void {
         triggerHandlers('console', { args, level });
 
         // this fails for some browsers. :(
@@ -138,8 +138,8 @@ function instrumentFetch(): void {
     return;
   }
 
-  fill(global, 'fetch', function(originalFetch: () => void): () => void {
-    return function(...args: any[]): void {
+  fill(global, 'fetch', function (originalFetch: () => void): () => void {
+    return function (...args: any[]): void {
       const commonHandlerData = {
         args,
         fetchData: {
@@ -169,9 +169,9 @@ function instrumentFetch(): void {
             endTimestamp: Date.now(),
             error,
           });
-          // NOTE: If you are a Sentry user, and you are seeing this stack frame,
-          //       it means the sentry.javascript SDK caught an error invoking your application code.
-          //       This is expected behavior and NOT indicative of a bug with sentry.javascript.
+          // NOTE: If you are a Beidou user, and you are seeing this stack frame,
+          //       it means the beidou.javascript SDK caught an error invoking your application code.
+          //       This is expected behavior and NOT indicative of a bug with beidou.javascript.
           throw error;
         },
       );
@@ -180,9 +180,9 @@ function instrumentFetch(): void {
 }
 
 /** JSDoc */
-interface SentryWrappedXMLHttpRequest extends XMLHttpRequest {
+interface BeidouWrappedXMLHttpRequest extends XMLHttpRequest {
   [key: string]: any;
-  __sentry_xhr__?: {
+  __beidou_xhr__?: {
     method?: string;
     url?: string;
     status_code?: number;
@@ -221,30 +221,30 @@ function instrumentXHR(): void {
 
   const xhrproto = XMLHttpRequest.prototype;
 
-  fill(xhrproto, 'open', function(originalOpen: () => void): () => void {
-    return function(this: SentryWrappedXMLHttpRequest, ...args: any[]): void {
+  fill(xhrproto, 'open', function (originalOpen: () => void): () => void {
+    return function (this: BeidouWrappedXMLHttpRequest, ...args: any[]): void {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const xhr = this;
       const url = args[1];
-      xhr.__sentry_xhr__ = {
+      xhr.__beidou_xhr__ = {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         method: isString(args[0]) ? args[0].toUpperCase() : args[0],
         url: args[1],
       };
 
-      // if Sentry key appears in URL, don't capture it as a request
+      // if Beidou key appears in URL, don't capture it as a request
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (isString(url) && xhr.__sentry_xhr__.method === 'POST' && url.match(/sentry_key/)) {
-        xhr.__sentry_own_request__ = true;
+      if (isString(url) && xhr.__beidou_xhr__.method === 'POST' && url.match(/beidou_key/)) {
+        xhr.__beidou_own_request__ = true;
       }
 
-      const onreadystatechangeHandler = function(): void {
+      const onreadystatechangeHandler = function (): void {
         if (xhr.readyState === 4) {
           try {
             // touching statusCode in some platforms throws
             // an exception
-            if (xhr.__sentry_xhr__) {
-              xhr.__sentry_xhr__.status_code = xhr.status;
+            if (xhr.__beidou_xhr__) {
+              xhr.__beidou_xhr__.status_code = xhr.status;
             }
           } catch (e) {
             /* do nothing */
@@ -259,8 +259,8 @@ function instrumentXHR(): void {
       };
 
       if ('onreadystatechange' in xhr && typeof xhr.onreadystatechange === 'function') {
-        fill(xhr, 'onreadystatechange', function(original: WrappedFunction): Function {
-          return function(...readyStateArgs: any[]): void {
+        fill(xhr, 'onreadystatechange', function (original: WrappedFunction): Function {
+          return function (...readyStateArgs: any[]): void {
             onreadystatechangeHandler();
             return original.apply(xhr, readyStateArgs);
           };
@@ -273,8 +273,8 @@ function instrumentXHR(): void {
     };
   });
 
-  fill(xhrproto, 'send', function(originalSend: () => void): () => void {
-    return function(this: SentryWrappedXMLHttpRequest, ...args: any[]): void {
+  fill(xhrproto, 'send', function (originalSend: () => void): () => void {
+    return function (this: BeidouWrappedXMLHttpRequest, ...args: any[]): void {
       triggerHandlers('xhr', {
         args,
         startTimestamp: Date.now(),
@@ -295,7 +295,7 @@ function instrumentHistory(): void {
   }
 
   const oldOnPopState = global.onpopstate;
-  global.onpopstate = function(this: WindowEventHandlers, ...args: any[]): any {
+  global.onpopstate = function (this: WindowEventHandlers, ...args: any[]): any {
     const to = global.location.href;
     // keep track of the current URL state, as we always receive only the updated state
     const from = lastHref;
@@ -311,7 +311,7 @@ function instrumentHistory(): void {
 
   /** @hidden */
   function historyReplacementFunction(originalHistoryFunction: () => void): () => void {
-    return function(this: History, ...args: any[]): void {
+    return function (this: History, ...args: any[]): void {
       const url = args.length > 2 ? args[2] : undefined;
       if (url) {
         // coerce to string (this is what pushState does)
@@ -354,14 +354,14 @@ function instrumentDOM(): void {
     }
     /* eslint-enable @typescript-eslint/no-unsafe-member-access */
 
-    fill(proto, 'addEventListener', function(
+    fill(proto, 'addEventListener', function (
       original: () => void,
     ): (
-      eventName: string,
-      fn: EventListenerOrEventListenerObject,
-      options?: boolean | AddEventListenerOptions,
-    ) => void {
-      return function(
+        eventName: string,
+        fn: EventListenerOrEventListenerObject,
+        options?: boolean | AddEventListenerOptions,
+      ) => void {
+      return function (
         this: any,
         eventName: string,
         fn: EventListenerOrEventListenerObject,
@@ -369,16 +369,16 @@ function instrumentDOM(): void {
       ): (eventName: string, fn: EventListenerOrEventListenerObject, capture?: boolean, secure?: boolean) => void {
         if (fn && (fn as EventListenerObject).handleEvent) {
           if (eventName === 'click') {
-            fill(fn, 'handleEvent', function(innerOriginal: () => void): (caughtEvent: Event) => void {
-              return function(this: any, event: Event): (event: Event) => void {
+            fill(fn, 'handleEvent', function (innerOriginal: () => void): (caughtEvent: Event) => void {
+              return function (this: any, event: Event): (event: Event) => void {
                 domEventHandler('click', triggerHandlers.bind(null, 'dom'))(event);
                 return innerOriginal.call(this, event);
               };
             });
           }
           if (eventName === 'keypress') {
-            fill(fn, 'handleEvent', function(innerOriginal: () => void): (caughtEvent: Event) => void {
-              return function(this: any, event: Event): (event: Event) => void {
+            fill(fn, 'handleEvent', function (innerOriginal: () => void): (caughtEvent: Event) => void {
+              return function (this: any, event: Event): (event: Event) => void {
                 keypressEventHandler(triggerHandlers.bind(null, 'dom'))(event);
                 return innerOriginal.call(this, event);
               };
@@ -397,24 +397,24 @@ function instrumentDOM(): void {
       };
     });
 
-    fill(proto, 'removeEventListener', function(
+    fill(proto, 'removeEventListener', function (
       original: () => void,
     ): (
-      this: any,
-      eventName: string,
-      fn: EventListenerOrEventListenerObject,
-      options?: boolean | EventListenerOptions,
-    ) => () => void {
-      return function(
+        this: any,
+        eventName: string,
+        fn: EventListenerOrEventListenerObject,
+        options?: boolean | EventListenerOptions,
+      ) => () => void {
+      return function (
         this: any,
         eventName: string,
         fn: EventListenerOrEventListenerObject,
         options?: boolean | EventListenerOptions,
       ): () => void {
         try {
-          original.call(this, eventName, ((fn as unknown) as WrappedFunction).__sentry_wrapped__, options);
+          original.call(this, eventName, ((fn as unknown) as WrappedFunction).__beidou_wrapped__, options);
         } catch (e) {
-          // ignore, accessing __sentry_wrapped__ will throw in some Selenium environments
+          // ignore, accessing __beidou_wrapped__ will throw in some Selenium environments
         }
         return original.call(this, eventName, fn, options);
       };
@@ -481,7 +481,7 @@ function keypressEventHandler(handler: Function): (event: Event) => void {
       target = event.target;
     } catch (e) {
       // just accessing event properties can throw an exception in some rare circumstances
-      // see: https://github.com/getsentry/raven-js/issues/838
+      // see: https://github.com/getbeidou/raven-js/issues/838
       return;
     }
 
@@ -512,7 +512,7 @@ let _oldOnErrorHandler: OnErrorEventHandler = null;
 function instrumentError(): void {
   _oldOnErrorHandler = global.onerror;
 
-  global.onerror = function(msg: any, url: any, line: any, column: any, error: any): boolean {
+  global.onerror = function (msg: any, url: any, line: any, column: any, error: any): boolean {
     triggerHandlers('error', {
       column,
       error,
@@ -535,7 +535,7 @@ let _oldOnUnhandledRejectionHandler: ((e: any) => void) | null = null;
 function instrumentUnhandledRejection(): void {
   _oldOnUnhandledRejectionHandler = global.onunhandledrejection;
 
-  global.onunhandledrejection = function(e: any): boolean {
+  global.onunhandledrejection = function (e: any): boolean {
     triggerHandlers('unhandledrejection', e);
 
     if (_oldOnUnhandledRejectionHandler) {

@@ -5,7 +5,7 @@ import { consoleSandbox, getGlobalObject } from './misc';
 const global = getGlobalObject<Window | NodeJS.Global>();
 
 /** Prefix for logging strings */
-const PREFIX = 'Sentry Logger ';
+const PREFIX = 'Beidou Logger ';
 
 /** JSDoc */
 class Logger {
@@ -58,7 +58,7 @@ class Logger {
   }
 }
 
-// Ensure we only have a single logger instance, even if multiple versions of @sentry/utils are being used
+// Ensure we only have a single logger instance, even if multiple versions of @beidou/utils are being used
 global.__SENTRY__ = global.__SENTRY__ || {};
 const logger = (global.__SENTRY__.logger as Logger) || (global.__SENTRY__.logger = new Logger());
 
