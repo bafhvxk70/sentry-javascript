@@ -42,7 +42,7 @@ function runTests() {
   const bundlePath = path.join(__dirname, 'tmp.js');
   const { window } = new JSDOM(``, { runScripts: 'dangerously' });
 
-  window.onerror = function() {
+  window.onerror = function () {
     console.error('ERROR thrown in manual test:');
     console.error(arguments);
     console.error('------------------');
@@ -60,7 +60,7 @@ function runTests() {
   scriptEl.textContent = myLibrary;
   window.document.body.appendChild(scriptEl);
 
-  // Testing https://github.com/getsentry/sentry-javascript/issues/2043
+  // Testing https://github.com/getbeidou/beidou-javascript/issues/2043
   const scriptEl2 = window.document.createElement('script');
   scriptEl2.textContent = myLibrary;
   window.document.body.appendChild(scriptEl2);

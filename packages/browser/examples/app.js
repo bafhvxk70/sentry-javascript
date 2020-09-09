@@ -5,8 +5,8 @@ class HappyIntegration {
   }
 
   setupOnce() {
-    Sentry.addGlobalEventProcessor(event => {
-      const self = Sentry.getCurrentHub().getIntegration(HappyIntegration);
+    Beidou.addGlobalEventProcessor(event => {
+      const self = Beidou.getCurrentHub().getIntegration(HappyIntegration);
       // Run the integration ONLY when it was installed on the current Hub
       if (self) {
         if (event.message === 'Happy Message') {
@@ -18,7 +18,7 @@ class HappyIntegration {
   }
 }
 
-class HappyTransport extends Sentry.Transports.BaseTransport {
+class HappyTransport extends Beidou.Transports.BaseTransport {
   sendEvent(event) {
     console.log(
       `This is the place where you'd implement your own sending logic. It'd get url: ${this.url} and an event itself:`,
@@ -31,15 +31,15 @@ class HappyTransport extends Sentry.Transports.BaseTransport {
   }
 }
 
-Sentry.init({
+Beidou.init({
   // Client's DSN.
-  dsn: 'https://363a337c11a64611be4845ad6e24f3ac@sentry.io/297378',
+  dsn: 'https://363a337c11a64611be4845ad6e24f3ac@beidou.io/297378',
   // An array of strings or regexps that'll be used to ignore specific errors based on their type/message
   ignoreErrors: [/PickleRick_\d\d/, 'RangeError'],
   // An array of strings or regexps that'll be used to ignore specific errors based on their origin url
   denyUrls: ['external-lib.js'],
   // An array of strings or regexps that'll be used to allow specific errors based on their origin url
-  allowUrls: ['http://localhost:5000', 'https://browser.sentry-cdn'],
+  allowUrls: ['http://localhost:5000', 'https://browser.beidou-cdn'],
   // Debug mode with valuable initialization/lifecycle informations.
   debug: true,
   // Whether SDK should be enabled or not.
@@ -52,7 +52,7 @@ Sentry.init({
   release: '1537345109360',
   // An environment identifier.
   environment: 'staging',
-  // Custom event transport that will be used to send things to Sentry
+  // Custom event transport that will be used to send things to Beidou
   transport: HappyTransport,
   // Method called for every captured event
   async beforeSend(event, hint) {
@@ -74,7 +74,7 @@ Sentry.init({
   // Method called for every captured breadcrumb
   beforeBreadcrumb(breadcrumb, hint) {
     // We ignore our own logger and rest of the buttons just for presentation purposes
-    if (breadcrumb.message.startsWith('Sentry Logger')) return null;
+    if (breadcrumb.message.startsWith('Beidou Logger')) return null;
     if (breadcrumb.category !== 'ui.click' || hint.event.target.id !== 'breadcrumb-hint') return null;
 
     // If we have a `ui.click` type of breadcrumb, eg. clicking on a button we defined in index.html
@@ -122,23 +122,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelector('#capture-exception').addEventListener('click', () => {
-    Sentry.captureException(new Error(`captureException call no. ${Date.now()}`));
+    Beidou.captureException(new Error(`captureException call no. ${Date.now()}`));
   });
 
   document.querySelector('#capture-message').addEventListener('click', () => {
-    Sentry.captureMessage(`captureMessage call no. ${Date.now()}`);
+    Beidou.captureMessage(`captureMessage call no. ${Date.now()}`);
   });
 
   document.querySelector('#duplicate-exception').addEventListener('click', () => {
-    Sentry.captureException(new Error('duplicated exception'));
+    Beidou.captureException(new Error('duplicated exception'));
   });
 
   document.querySelector('#duplicate-message').addEventListener('click', () => {
-    Sentry.captureMessage('duplicate captureMessage');
+    Beidou.captureMessage('duplicate captureMessage');
   });
 
   document.querySelector('#integration-example').addEventListener('click', () => {
-    Sentry.captureMessage('Happy Message');
+    Beidou.captureMessage('Happy Message');
   });
 
   document.querySelector('#exception-hint').addEventListener('click', () => {
@@ -157,5 +157,5 @@ document.addEventListener('DOMContentLoaded', () => {
     throw new CustomError('Hey there');
   });
 
-  document.querySelector('#breadcrumb-hint').addEventListener('click', () => {});
+  document.querySelector('#breadcrumb-hint').addEventListener('click', () => { });
 });

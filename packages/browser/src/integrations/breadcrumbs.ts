@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable max-lines */
-import { getCurrentHub } from '@sentry/core';
-import { Event, Integration, Severity } from '@sentry/types';
+import { getCurrentHub } from '@beidou/core';
+import { Event, Integration, Severity } from '@beidou/types';
 import {
   addInstrumentationHandler,
   getEventDescription,
@@ -9,15 +9,15 @@ import {
   htmlTreeAsString,
   parseUrl,
   safeJoin,
-} from '@sentry/utils';
+} from '@beidou/utils';
 
 /**
  * @hidden
  */
-export interface SentryWrappedXMLHttpRequest extends XMLHttpRequest {
+export interface BeidouWrappedXMLHttpRequest extends XMLHttpRequest {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
-  __sentry_xhr__?: {
+  __beidou_xhr__?: {
     method?: string;
     url?: string;
     status_code?: number;
@@ -30,7 +30,7 @@ interface BreadcrumbsOptions {
   dom: boolean;
   fetch: boolean;
   history: boolean;
-  sentry: boolean;
+  beidou: boolean;
   xhr: boolean;
 }
 
@@ -61,22 +61,22 @@ export class Breadcrumbs implements Integration {
       dom: true,
       fetch: true,
       history: true,
-      sentry: true,
+      beidou: true,
       xhr: true,
       ...options,
     };
   }
 
   /**
-   * Create a breadcrumb of `sentry` from the events themselves
+   * Create a breadcrumb of `beidou` from the events themselves
    */
-  public addSentryBreadcrumb(event: Event): void {
-    if (!this._options.sentry) {
+  public addBeidouBreadcrumb(event: Event): void {
+    if (!this._options.beidou) {
       return;
     }
     getCurrentHub().addBreadcrumb(
       {
-        category: `sentry.${event.type === 'transaction' ? 'transaction' : 'event'}`,
+        category: `beidou.${event.type === 'transaction' ? 'transaction' : 'event'}`,
         event_id: event.event_id,
         level: event.level,
         message: getEventDescription(event),
@@ -176,7 +176,7 @@ export class Breadcrumbs implements Integration {
   private _domBreadcrumb(handlerData: { [key: string]: any }): void {
     let target;
 
-    // Accessing event.target can throw (see getsentry/raven-js#838, #768)
+    // Accessing event.target can throw (see getbeidou/raven-js#838, #768)
     try {
       target = handlerData.event.target
         ? htmlTreeAsString(handlerData.event.target as Node)
@@ -207,15 +207,15 @@ export class Breadcrumbs implements Integration {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _xhrBreadcrumb(handlerData: { [key: string]: any }): void {
     if (handlerData.endTimestamp) {
-      // We only capture complete, non-sentry requests
-      if (handlerData.xhr.__sentry_own_request__) {
+      // We only capture complete, non-beidou requests
+      if (handlerData.xhr.__beidou_own_request__) {
         return;
       }
 
       getCurrentHub().addBreadcrumb(
         {
           category: 'xhr',
-          data: handlerData.xhr.__sentry_xhr__,
+          data: handlerData.xhr.__beidou_xhr__,
           type: 'http',
         },
         {
@@ -237,8 +237,8 @@ export class Breadcrumbs implements Integration {
       return;
     }
 
-    if (handlerData.fetchData.url.match(/sentry_key/) && handlerData.fetchData.method === 'POST') {
-      // We will not create breadcrumbs for fetch requests that contain `sentry_key` (internal sentry requests)
+    if (handlerData.fetchData.url.match(/beidou_key/) && handlerData.fetchData.method === 'POST') {
+      // We will not create breadcrumbs for fetch requests that contain `beidou_key` (internal beidou requests)
       return;
     }
 

@@ -11,10 +11,10 @@ const commitHash = require('child_process')
 const terserInstance = terser({
   mangle: {
     // captureExceptions and captureMessage are public API methods and they don't need to be listed here
-    // as mangler doesn't touch user-facing thing, however sentryWrapped is not, and it would be mangled into a minified version.
+    // as mangler doesn't touch user-facing thing, however beidouWrapped is not, and it would be mangled into a minified version.
     // We need those full names to correctly detect our internal frames for stripping.
     // I listed all of them here just for the clarity sake, as they are all used in the frames manipulation process.
-    reserved: ['captureException', 'captureMessage', 'sentryWrapped'],
+    reserved: ['captureException', 'captureMessage', 'beidouWrapped'],
     properties: {
       regex: /^_[^_]/,
     },
@@ -22,11 +22,11 @@ const terserInstance = terser({
 });
 
 const paths = {
-  '@sentry/utils': ['../utils/src'],
-  '@sentry/core': ['../core/src'],
-  '@sentry/hub': ['../hub/src'],
-  '@sentry/types': ['../types/src'],
-  '@sentry/minimal': ['../minimal/src'],
+  '@beidou/utils': ['../utils/src'],
+  '@beidou/core': ['../core/src'],
+  '@beidou/hub': ['../hub/src'],
+  '@beidou/types': ['../types/src'],
+  '@beidou/minimal': ['../minimal/src'],
 };
 
 const plugins = [
@@ -52,7 +52,7 @@ const bundleConfig = {
   input: 'src/index.ts',
   output: {
     format: 'iife',
-    name: 'Sentry',
+    name: 'Beidou',
     sourcemap: true,
     strict: false,
   },
@@ -61,7 +61,7 @@ const bundleConfig = {
     ...plugins,
     license({
       sourcemap: true,
-      banner: `/*! @sentry/browser <%= pkg.version %> (${commitHash}) | https://github.com/getsentry/sentry-javascript */`,
+      banner: `/*! @beidou/browser <%= pkg.version %> (${commitHash}) | https://github.com/getbeidou/beidou-javascript */`,
     }),
   ],
 };

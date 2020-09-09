@@ -3,8 +3,8 @@ import { SinonStub, stub } from 'sinon';
 
 import { Status, Transports } from '../../../src';
 
-const testDsn = 'https://123@sentry.io/42';
-const transportUrl = 'https://sentry.io/api/42/store/?sentry_key=123&sentry_version=7';
+const testDsn = 'https://123@beidou.io/42';
+const transportUrl = 'https://beidou.io/api/42/store/?beidou_key=123&beidou_version=7';
 const payload = {
   event_id: '1337',
   message: 'Pickle Rick',
@@ -32,7 +32,7 @@ describe('FetchTransport', () => {
   });
 
   describe('sendEvent()', async () => {
-    it('sends a request to Sentry servers', async () => {
+    it('sends a request to Beidou servers', async () => {
       const response = { status: 200 };
 
       fetch.returns(Promise.resolve(response));

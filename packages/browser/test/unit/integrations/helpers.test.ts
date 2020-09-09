@@ -1,4 +1,4 @@
-import { WrappedFunction } from '@sentry/types';
+import { WrappedFunction } from '@beidou/types';
 import { expect } from 'chai';
 import { SinonSpy, spy } from 'sinon';
 
@@ -32,8 +32,8 @@ describe('internal wrap()', () => {
 
   it('bail out with the original if accessing custom props go bad', () => {
     const fn = (() => 1337) as WrappedFunction;
-    fn.__sentry__ = false;
-    Object.defineProperty(fn, '__sentry_wrapped__', {
+    fn.__beidou__ = false;
+    Object.defineProperty(fn, '__beidou_wrapped__', {
       get(): void {
         throw new Error('boom');
       },
@@ -41,7 +41,7 @@ describe('internal wrap()', () => {
 
     expect(wrap(fn)).equal(fn);
 
-    Object.defineProperty(fn, '__sentry__', {
+    Object.defineProperty(fn, '__beidou__', {
       get(): void {
         throw new Error('boom');
       },
@@ -81,14 +81,14 @@ describe('internal wrap()', () => {
 
     const wrapped = wrap(fn);
 
-    expect(fn).to.have.property('__sentry_wrapped__');
-    expect(fn.__sentry_wrapped__).equal(wrapped);
+    expect(fn).to.have.property('__beidou_wrapped__');
+    expect(fn.__beidou_wrapped__).equal(wrapped);
 
-    expect(wrapped).to.have.property('__sentry__');
-    expect(wrapped.__sentry__).equal(true);
+    expect(wrapped).to.have.property('__beidou__');
+    expect(wrapped.__beidou__).equal(true);
 
-    expect(wrapped).to.have.property('__sentry_original__');
-    expect(wrapped.__sentry_original__).equal(fn);
+    expect(wrapped).to.have.property('__beidou_original__');
+    expect(wrapped.__beidou_original__).equal(fn);
   });
 
   it('copies over original functions properties', () => {
@@ -125,8 +125,8 @@ describe('internal wrap()', () => {
     const wrapped = wrap(fn);
     wrapped(fnArgA, fnArgB);
 
-    expect(fnArgA).to.have.property('__sentry_wrapped__');
-    expect(fnArgB).to.have.property('__sentry_wrapped__');
+    expect(fnArgA).to.have.property('__beidou_wrapped__');
+    expect(fnArgB).to.have.property('__beidou_wrapped__');
   });
 
   it('calls either `handleEvent` property if it exists or the original function', () => {
@@ -162,7 +162,7 @@ describe('internal wrap()', () => {
       },
     };
     // @ts-ignore eventFn does not have property handleEvent
-    context.eventFn.handleEvent = function(): void {
+    context.eventFn.handleEvent = function (): void {
       expect(this).equal(context);
     };
 
@@ -193,15 +193,15 @@ describe('internal wrap()', () => {
     const wrapped = wrap(fn);
 
     // Shouldn't show up in iteration
-    expect(Object.keys(fn)).to.not.include('__sentry__');
-    expect(Object.keys(fn)).to.not.include('__sentry_original__');
-    expect(Object.keys(fn)).to.not.include('__sentry_wrapped__');
-    expect(Object.keys(wrapped)).to.not.include('__sentry__');
-    expect(Object.keys(wrapped)).to.not.include('__sentry_original__');
-    expect(Object.keys(wrapped)).to.not.include('__sentry_wrapped__');
+    expect(Object.keys(fn)).to.not.include('__beidou__');
+    expect(Object.keys(fn)).to.not.include('__beidou_original__');
+    expect(Object.keys(fn)).to.not.include('__beidou_wrapped__');
+    expect(Object.keys(wrapped)).to.not.include('__beidou__');
+    expect(Object.keys(wrapped)).to.not.include('__beidou_original__');
+    expect(Object.keys(wrapped)).to.not.include('__beidou_wrapped__');
     // But should be accessible directly
-    expect(wrapped.__sentry__).to.equal(true);
-    expect(wrapped.__sentry_original__).to.equal(fn);
-    expect(fn.__sentry_wrapped__).to.equal(wrapped);
+    expect(wrapped.__beidou__).to.equal(true);
+    expect(wrapped.__beidou_original__).to.equal(fn);
+    expect(fn.__beidou_wrapped__).to.equal(wrapped);
   });
 });

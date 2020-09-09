@@ -1,6 +1,6 @@
-import { API } from '@sentry/core';
-import { Event, Response, Transport, TransportOptions } from '@sentry/types';
-import { PromiseBuffer, SentryError } from '@sentry/utils';
+import { API } from '@beidou/core';
+import { Event, Response, Transport, TransportOptions } from '@beidou/types';
+import { PromiseBuffer, BeidouError } from '@beidou/utils';
 
 /** Base Transport class implementation */
 export abstract class BaseTransport implements Transport {
@@ -9,7 +9,7 @@ export abstract class BaseTransport implements Transport {
    */
   public url: string;
 
-  /** Helper to get Sentry API endpoints. */
+  /** Helper to get Beidou API endpoints. */
   protected readonly _api: API;
 
   /** A simple buffer holding all requests. */
@@ -25,7 +25,7 @@ export abstract class BaseTransport implements Transport {
    * @inheritDoc
    */
   public sendEvent(_: Event): PromiseLike<Response> {
-    throw new SentryError('Transport Class has to implement `sendEvent` method');
+    throw new BeidouError('Transport Class has to implement `sendEvent` method');
   }
 
   /**

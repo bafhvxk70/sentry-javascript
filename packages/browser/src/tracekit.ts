@@ -1,6 +1,6 @@
 /**
  * This was originally forked from https://github.com/occ/TraceKit, but has since been
- * largely modified and is now maintained as part of Sentry JS SDK.
+ * largely modified and is now maintained as part of Beidou JS SDK.
  */
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -50,7 +50,7 @@ const gecko = /^\s*(.*?)(?:\((.*?)\))?(?:^|@)?((?:file|https?|blob|chrome|webpac
 const winjs = /^\s*at (?:((?:\[object object\])?.+) )?\(?((?:file|ms-appx|https?|webpack|blob):.*?):(\d+)(?::(\d+))?\)?\s*$/i;
 const geckoEval = /(\S+) line (\d+)(?: > eval line \d+)* > eval/i;
 const chromeEval = /\((\S*)(?::(\d+))(?::(\d+))\)/;
-// Based on our own mapping pattern - https://github.com/getsentry/sentry/blob/9f08305e09866c8bd6d0c24f5b0aabdd7dd6c59c/src/sentry/lang/javascript/errormapping.py#L83-L108
+// Based on our own mapping pattern - https://github.com/getbeidou/beidou/blob/9f08305e09866c8bd6d0c24f5b0aabdd7dd6c59c/src/beidou/lang/javascript/errormapping.py#L83-L108
 const reactMinifiedRegexp = /Minified React error #\d+;/i;
 
 /** JSDoc */
@@ -250,7 +250,7 @@ function popFrames(stacktrace: StackTrace, popSize: number): StackTrace {
 
 /**
  * There are cases where stacktrace.message is an Event object
- * https://github.com/getsentry/sentry-javascript/issues/1949
+ * https://github.com/getbeidou/beidou-javascript/issues/1949
  * In this specific case we try to extract stacktrace.message.error.message
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

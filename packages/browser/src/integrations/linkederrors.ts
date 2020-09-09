@@ -1,6 +1,6 @@
-import { addGlobalEventProcessor, getCurrentHub } from '@sentry/core';
-import { Event, EventHint, Exception, ExtendedError, Integration } from '@sentry/types';
-import { isInstanceOf } from '@sentry/utils';
+import { addGlobalEventProcessor, getCurrentHub } from '@beidou/core';
+import { Event, EventHint, Exception, ExtendedError, Integration } from '@beidou/types';
+import { isInstanceOf } from '@beidou/utils';
 
 import { exceptionFromStacktrace } from '../parsers';
 import { computeStackTrace } from '../tracekit';

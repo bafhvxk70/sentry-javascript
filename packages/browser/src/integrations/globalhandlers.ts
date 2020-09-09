@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { getCurrentHub } from '@sentry/core';
-import { Event, Integration, Severity } from '@sentry/types';
+import { getCurrentHub } from '@beidou/core';
+import { Event, Integration, Severity } from '@beidou/types';
 import {
   addExceptionMechanism,
   addInstrumentationHandler,
@@ -9,7 +9,7 @@ import {
   isPrimitive,
   isString,
   logger,
-} from '@sentry/utils';
+} from '@beidou/utils';
 
 import { eventFromUnknownInput } from '../eventbuilder';
 import { shouldIgnoreOnError } from '../helpers';
@@ -78,7 +78,7 @@ export class GlobalHandlers implements Integration {
         const error = data.error;
         const currentHub = getCurrentHub();
         const hasIntegration = currentHub.getIntegration(GlobalHandlers);
-        const isFailedOwnDelivery = error && error.__sentry_own_request__ === true;
+        const isFailedOwnDelivery = error && error.__beidou_own_request__ === true;
 
         if (!hasIntegration || shouldIgnoreOnError() || isFailedOwnDelivery) {
           return;
@@ -88,14 +88,14 @@ export class GlobalHandlers implements Integration {
         const event = isPrimitive(error)
           ? this._eventFromIncompleteOnError(data.msg, data.url, data.line, data.column)
           : this._enhanceEventWithInitialFrame(
-              eventFromUnknownInput(error, undefined, {
-                attachStacktrace: client && client.getOptions().attachStacktrace,
-                rejection: false,
-              }),
-              data.url,
-              data.line,
-              data.column,
-            );
+            eventFromUnknownInput(error, undefined, {
+              attachStacktrace: client && client.getOptions().attachStacktrace,
+              rejection: false,
+            }),
+            data.url,
+            data.line,
+            data.column,
+          );
 
         addExceptionMechanism(event, {
           handled: false,
@@ -134,7 +134,7 @@ export class GlobalHandlers implements Integration {
           // to CustomEvents, moving the `promise` and `reason` attributes of the PRE into
           // the CustomEvent's `detail` attribute, since they're not part of CustomEvent's spec
           // see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent and
-          // https://github.com/getsentry/sentry-javascript/issues/2380
+          // https://github.com/getbeidou/beidou-javascript/issues/2380
           else if ('detail' in e && 'reason' in e.detail) {
             error = e.detail.reason;
           }
@@ -144,7 +144,7 @@ export class GlobalHandlers implements Integration {
 
         const currentHub = getCurrentHub();
         const hasIntegration = currentHub.getIntegration(GlobalHandlers);
-        const isFailedOwnDelivery = error && error.__sentry_own_request__ === true;
+        const isFailedOwnDelivery = error && error.__beidou_own_request__ === true;
 
         if (!hasIntegration || shouldIgnoreOnError() || isFailedOwnDelivery) {
           return true;
@@ -154,9 +154,9 @@ export class GlobalHandlers implements Integration {
         const event = isPrimitive(error)
           ? this._eventFromIncompleteRejection(error)
           : eventFromUnknownInput(error, undefined, {
-              attachStacktrace: client && client.getOptions().attachStacktrace,
-              rejection: true,
-            });
+            attachStacktrace: client && client.getOptions().attachStacktrace,
+            rejection: true,
+          });
 
         event.level = Severity.Error;
 

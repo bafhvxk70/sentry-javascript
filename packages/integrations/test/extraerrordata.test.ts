@@ -1,9 +1,9 @@
-import { Event as SentryEvent, ExtendedError } from '@sentry/types';
+import { Event as BeidouEvent, ExtendedError } from '@beidou/types';
 
 import { ExtraErrorData } from '../src/extraerrordata';
 
 const extraErrorData = new ExtraErrorData();
-let event: SentryEvent;
+let event: BeidouEvent;
 
 describe('ExtraErrorData()', () => {
   beforeEach(() => {
@@ -74,7 +74,7 @@ describe('ExtraErrorData()', () => {
     expect(enhancedEvent).toEqual(event);
   });
 
-  it('should return event if there is no SentryEventHint', () => {
+  it('should return event if there is no BeidouEventHint', () => {
     const enhancedEvent = extraErrorData.enhanceEventWithErrorData(event);
 
     expect(enhancedEvent).toEqual(event);

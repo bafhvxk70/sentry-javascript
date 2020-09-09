@@ -1,5 +1,5 @@
-import { Event, Exception, StackFrame } from '@sentry/types';
-import { extractExceptionKeysForMessage, isEvent, normalizeToSize } from '@sentry/utils';
+import { Event, Exception, StackFrame } from '@beidou/types';
+import { extractExceptionKeysForMessage, isEvent, normalizeToSize } from '@beidou/utils';
 
 import { computeStackTrace, StackFrame as TraceKitStackFrame, StackTrace as TraceKitStackTrace } from './tracekit';
 
@@ -42,9 +42,8 @@ export function eventFromPlainObject(
       values: [
         {
           type: isEvent(exception) ? exception.constructor.name : rejection ? 'UnhandledRejection' : 'Error',
-          value: `Non-Error ${
-            rejection ? 'promise rejection' : 'exception'
-          } captured with keys: ${extractExceptionKeysForMessage(exception)}`,
+          value: `Non-Error ${rejection ? 'promise rejection' : 'exception'
+            } captured with keys: ${extractExceptionKeysForMessage(exception)}`,
         },
       ],
     },
@@ -96,7 +95,7 @@ export function prepareFramesForEvent(stack: TraceKitStackFrame[]): StackFrame[]
   }
 
   // If stack ends with one of our internal API calls, remove it (ends, meaning it's the bottom of the stack - aka top-most call)
-  if (lastFrameFunction.indexOf('sentryWrapped') !== -1) {
+  if (lastFrameFunction.indexOf('beidouWrapped') !== -1) {
     localStack = localStack.slice(0, -1);
   }
 

@@ -4,37 +4,37 @@ var loaderVariants = [
 ];
 
 for (var idx in loaderVariants) {
-  (function() {
-    describe(loaderVariants[idx], function() {
+  (function () {
+    describe(loaderVariants[idx], function () {
       this.timeout(60000);
       this.retries(3);
 
       var sandbox;
 
-      beforeEach(function(done) {
+      beforeEach(function (done) {
         sandbox = createSandbox(done, loaderVariants[idx]);
       });
 
-      afterEach(function() {
+      afterEach(function () {
         document.body.removeChild(sandbox);
       });
 
-      describe("Loader Specific Tests - With no Global init() call", function() {
-        it("should add breadcrumb from onLoad callback from undefined error", function() {
-          return runInSandbox(sandbox, function() {
-            Sentry.onLoad(function() {
+      describe("Loader Specific Tests - With no Global init() call", function () {
+        it("should add breadcrumb from onLoad callback from undefined error", function () {
+          return runInSandbox(sandbox, function () {
+            Beidou.onLoad(function () {
               initSDK();
-              Sentry.addBreadcrumb({
+              Beidou.addBreadcrumb({
                 category: "auth",
                 message: "testing loader",
                 level: "error",
               });
             });
-            setTimeout(function() {
-              Sentry.captureMessage("test");
+            setTimeout(function () {
+              Beidou.captureMessage("test");
             });
             undefinedMethod();
-          }).then(function(summary) {
+          }).then(function (summary) {
             assert.ok(summary.breadcrumbs);
             assert.lengthOf(summary.breadcrumbs, 1);
             assert.equal(summary.breadcrumbs[0].message, "testing loader");

@@ -18,12 +18,12 @@ import {
 } from '../../src';
 import { SimpleTransport } from './mocks/simpletransport';
 
-const dsn = 'https://53039209a22b4ec1bcc296a3c9fdecd6@sentry.io/4291';
+const dsn = 'https://53039209a22b4ec1bcc296a3c9fdecd6@beidou.io/4291';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, no-var
 declare var global: any;
 
-describe('SentryBrowser', () => {
+describe('BeidouBrowser', () => {
   const beforeSend: SinonSpy<[Event], Event> = spy((event: Event) => event);
 
   before(() => {
@@ -170,7 +170,7 @@ describe('SentryBrowser', () => {
   });
 });
 
-describe('SentryBrowser initialization', () => {
+describe('BeidouBrowser initialization', () => {
   it('should use window.SENTRY_RELEASE to set release on initialization if available', () => {
     global.SENTRY_RELEASE = { id: 'foobar' };
     init({ dsn });
@@ -212,7 +212,7 @@ describe('wrap()', () => {
 
   it('should allow for passing this and arguments through binding', () => {
     const result = wrap(
-      function(this: unknown, a: string, b: number): unknown[] {
+      function (this: unknown, a: string, b: number): unknown[] {
         return [this, a, b];
       }.bind({ context: 'this' }, 'b', 42),
     );
@@ -222,7 +222,7 @@ describe('wrap()', () => {
     expect((result as unknown[])[2]).to.equal(42);
 
     const result2 = wrap(
-      function(this: { x: number }): number {
+      function (this: { x: number }): number {
         return this.x;
       }.bind({ x: 42 }),
     );

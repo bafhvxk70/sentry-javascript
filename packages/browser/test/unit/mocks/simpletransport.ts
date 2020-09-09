@@ -1,4 +1,4 @@
-import { SyncPromise } from '@sentry/utils';
+import { SyncPromise } from '@beidou/utils';
 
 import { Event, Response, Status } from '../../../src';
 import { BaseTransport } from '../../../src/transports';

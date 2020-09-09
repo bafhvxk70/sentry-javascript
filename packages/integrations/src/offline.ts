@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Event, EventProcessor, Hub, Integration } from '@sentry/types';
-import { getGlobalObject, logger, uuid4 } from '@sentry/utils';
+import { Event, EventProcessor, Hub, Integration } from '@beidou/types';
+import { getGlobalObject, logger, uuid4 } from '@beidou/utils';
 import * as localForageType from 'localforage';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -49,7 +49,7 @@ export class Offline implements Integration {
     this.maxStoredEvents = options.maxStoredEvents || 30; // set a reasonable default
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.offlineEventStore = localForage.createInstance({
-      name: 'sentry/offlineEventStore',
+      name: 'beidou/offlineEventStore',
     });
 
     if ('addEventListener' in this.global) {

@@ -1,6 +1,6 @@
 // prettier-ignore
 // Prettier disabled due to trailing comma not working in IE10/11
-(function(
+(function (
   _window,
   _document,
   _script,
@@ -26,10 +26,10 @@
 
   // Create a namespace and attach function that will store captured exception
   // Because functions are also objects, we can attach the queue itself straight to it and save some bytes
-  var queue = function(content) {
+  var queue = function (content) {
     // content.e = error
     // content.p = promise rejection
-    // content.f = function call the Sentry
+    // content.f = function call the Beidou
     if (
       ('e' in content ||
         'p' in content ||
@@ -64,7 +64,7 @@
     _newScriptTag.setAttribute('crossorigin', 'anonymous');
 
     // Once our SDK is loaded
-    _newScriptTag.addEventListener('load', function() {
+    _newScriptTag.addEventListener('load', function () {
       try {
         // Restore onerror/onunhandledrejection handlers
         _window[_onerror] = _oldOnerror;
@@ -75,7 +75,7 @@
         var oldInit = SDK.init;
 
         // Configure it using provided DSN and config object
-        SDK.init = function(options) {
+        SDK.init = function (options) {
           var target = _config;
           for (var key in options) {
             if (Object.prototype.hasOwnProperty.call(options, key)) {
@@ -106,18 +106,18 @@
       }
 
       var initAlreadyCalled = false;
-      var __sentry = _window['__SENTRY__'];
+      var __beidou = _window['__SENTRY__'];
       // If there is a global __SENTRY__ that means that in any of the callbacks init() was already invoked
-      if (!(typeof __sentry === 'undefined') && __sentry.hub && __sentry.hub.getClient()) {
+      if (!(typeof __beidou === 'undefined') && __beidou.hub && __beidou.hub.getClient()) {
         initAlreadyCalled = true;
       }
 
-      // We want to replay all calls to Sentry and also make sure that `init` is called if it wasn't already
-      // We replay all calls to `Sentry.*` now
-      var calledSentry = false;
+      // We want to replay all calls to Beidou and also make sure that `init` is called if it wasn't already
+      // We replay all calls to `Beidou.*` now
+      var calledBeidou = false;
       for (var i = 0; i < data.length; i++) {
         if (data[i].f) {
-          calledSentry = true;
+          calledBeidou = true;
           var call = data[i];
           if (initAlreadyCalled === false && call.f !== 'init') {
             // First call always has to be init, this is a conveniece for the user so call to init is optional
@@ -127,8 +127,8 @@
           SDK[call.f].apply(SDK, call.a);
         }
       }
-      if (initAlreadyCalled === false && calledSentry === false) {
-        // Sentry has never been called but we need Sentry.init() so call it
+      if (initAlreadyCalled === false && calledBeidou === false) {
+        // Beidou has never been called but we need Beidou.init() so call it
         SDK.init();
       }
 
@@ -150,7 +150,7 @@
     }
   }
 
-  // We make sure we do not overwrite window.Sentry since there could be already integrations in there
+  // We make sure we do not overwrite window.Beidou since there could be already integrations in there
   _window[_namespace] = _window[_namespace] || {};
 
   _window[_namespace].onLoad = function (callback) {
@@ -161,10 +161,10 @@
     injectSdk(onLoadCallbacks);
   };
 
-  _window[_namespace].forceLoad = function() {
+  _window[_namespace].forceLoad = function () {
     forceLoad = true;
     if (lazy) {
-      setTimeout(function() {
+      setTimeout(function () {
         injectSdk(onLoadCallbacks);
       });
     }
@@ -180,8 +180,8 @@
     'configureScope',
     'withScope',
     'showReportDialog'
-  ].forEach(function(f) {
-    _window[_namespace][f] = function() {
+  ].forEach(function (f) {
+    _window[_namespace][f] = function () {
       queue({ f: f, a: arguments });
     };
   });
@@ -189,7 +189,7 @@
   // Store reference to the old `onerror` handler and override it with our own function
   // that will just push exceptions to the queue and call through old handler if we found one
   var _oldOnerror = _window[_onerror];
-  _window[_onerror] = function(message, source, lineno, colno, exception) {
+  _window[_onerror] = function (message, source, lineno, colno, exception) {
     // Use keys as "data type" to save some characters"
     queue({
       e: [].slice.call(arguments)
@@ -200,7 +200,7 @@
 
   // Do the same store/queue/call operations for `onunhandledrejection` event
   var _oldOnunhandledrejection = _window[_onunhandledrejection];
-  _window[_onunhandledrejection] = function(e) {
+  _window[_onunhandledrejection] = function (e) {
     queue({
       p: 'reason' in e ? e.reason : 'detail' in e && 'reason' in e.detail ? e.detail.reason : e
     });
@@ -212,6 +212,6 @@
       injectSdk(onLoadCallbacks);
     });
   }
-})(window, document, 'script', 'onerror', 'onunhandledrejection', 'Sentry', 'loader.js', '../../build/bundle.js', {
+})(window, document, 'script', 'onerror', 'onunhandledrejection', 'Beidou', 'loader.js', '../../build/bundle.js', {
   dsn: 'https://public@example.com/1'
 });

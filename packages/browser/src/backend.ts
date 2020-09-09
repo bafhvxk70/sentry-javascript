@@ -1,24 +1,24 @@
-import { BaseBackend } from '@sentry/core';
-import { Event, EventHint, Options, Severity, Transport } from '@sentry/types';
-import { supportsFetch } from '@sentry/utils';
+import { BaseBackend } from '@beidou/core';
+import { Event, EventHint, Options, Severity, Transport } from '@beidou/types';
+import { supportsFetch } from '@beidou/utils';
 
 import { eventFromException, eventFromMessage } from './eventbuilder';
 import { FetchTransport, XHRTransport } from './transports';
 
 /**
- * Configuration options for the Sentry Browser SDK.
+ * Configuration options for the Beidou Browser SDK.
  * @see BrowserClient for more information.
  */
 export interface BrowserOptions extends Options {
   /**
-   * A pattern for error URLs which should exclusively be sent to Sentry.
+   * A pattern for error URLs which should exclusively be sent to Beidou.
    * This is the opposite of {@link Options.denyUrls}.
    * By default, all errors will be sent.
    */
   allowUrls?: Array<string | RegExp>;
 
   /**
-   * A pattern for error URLs which should not be sent to Sentry.
+   * A pattern for error URLs which should not be sent to Beidou.
    * To allow certain errors instead, use {@link Options.allowUrls}.
    * By default, all errors will be sent.
    */
@@ -32,7 +32,7 @@ export interface BrowserOptions extends Options {
 }
 
 /**
- * The Sentry Browser SDK Backend.
+ * The Beidou Browser SDK Backend.
  * @hidden
  */
 export class BrowserBackend extends BaseBackend<BrowserOptions> {

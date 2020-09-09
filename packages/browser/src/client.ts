@@ -1,6 +1,6 @@
-import { BaseClient, Scope } from '@sentry/core';
-import { Event, EventHint } from '@sentry/types';
-import { getGlobalObject, logger } from '@sentry/utils';
+import { BaseClient, Scope } from '@beidou/core';
+import { Event, EventHint } from '@beidou/types';
+import { getGlobalObject, logger } from '@beidou/utils';
 
 import { BrowserBackend, BrowserOptions } from './backend';
 import { injectReportDialog, ReportDialogOptions } from './helpers';
@@ -8,10 +8,10 @@ import { Breadcrumbs } from './integrations';
 import { SDK_NAME, SDK_VERSION } from './version';
 
 /**
- * The Sentry Browser SDK Client.
+ * The Beidou Browser SDK Client.
  *
  * @see BrowserOptions for documentation on configuration options.
- * @see SentryClient for usage documentation.
+ * @see BeidouClient for usage documentation.
  */
 export class BrowserClient extends BaseClient<BrowserBackend, BrowserOptions> {
   /**
@@ -36,7 +36,7 @@ export class BrowserClient extends BaseClient<BrowserBackend, BrowserOptions> {
     }
 
     if (!this._isEnabled()) {
-      logger.error('Trying to call showReportDialog with Sentry Client disabled');
+      logger.error('Trying to call showReportDialog with Beidou Client disabled');
       return;
     }
 
@@ -57,7 +57,7 @@ export class BrowserClient extends BaseClient<BrowserBackend, BrowserOptions> {
       packages: [
         ...((event.sdk && event.sdk.packages) || []),
         {
-          name: 'npm:@sentry/browser',
+          name: 'npm:@beidou/browser',
           version: SDK_VERSION,
         },
       ],
@@ -73,7 +73,7 @@ export class BrowserClient extends BaseClient<BrowserBackend, BrowserOptions> {
   protected _sendEvent(event: Event): void {
     const integration = this.getIntegration(Breadcrumbs);
     if (integration) {
-      integration.addSentryBreadcrumb(event);
+      integration.addBeidouBreadcrumb(event);
     }
     super._sendEvent(event);
   }

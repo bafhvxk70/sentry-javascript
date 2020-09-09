@@ -1,5 +1,5 @@
-import { Event, EventProcessor, Hub, Integration } from '@sentry/types';
-import { getGlobalObject, logger } from '@sentry/utils';
+import { Event, EventProcessor, Hub, Integration } from '@beidou/types';
+import { getGlobalObject, logger } from '@beidou/utils';
 
 // See https://github.com/angular/angular.js/blob/v1.4.7/src/minErr.js
 const angularPattern = /^\[((?:[$a-zA-Z0-9]+:)?(?:[$a-zA-Z0-9]+))\] (.*?)\n?(\S+)$/;
@@ -18,7 +18,7 @@ export class Angular implements Integration {
   /**
    * moduleName used in Angular's DI resolution algorithm
    */
-  public static moduleName: string = 'ngSentry';
+  public static moduleName: string = 'ngBeidou';
 
   /**
    * @inheritDoc
@@ -32,7 +32,7 @@ export class Angular implements Integration {
   private readonly _angular: any;
 
   /**
-   * ngSentry module instance
+   * ngBeidou module instance
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private readonly _module: any;
@@ -81,7 +81,7 @@ export class Angular implements Integration {
   }
 
   /**
-   * Angular's exceptionHandler for Sentry integration
+   * Angular's exceptionHandler for Beidou integration
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _$exceptionHandlerDecorator($delegate: any): any {

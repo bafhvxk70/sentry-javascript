@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EventProcessor, Hub, Integration } from '@sentry/types';
-import { getGlobalObject, supportsReportingObserver } from '@sentry/utils';
+import { EventProcessor, Hub, Integration } from '@beidou/types';
+import { getGlobalObject, supportsReportingObserver } from '@beidou/utils';
 
 /** JSDoc */
 interface Report {
@@ -75,9 +75,9 @@ export class ReportingObserver implements Integration {
     private readonly _options: {
       types?: ReportTypes[];
     } = {
-      types: [ReportTypes.Crash, ReportTypes.Deprecation, ReportTypes.Intervention],
-    },
-  ) {}
+        types: [ReportTypes.Crash, ReportTypes.Deprecation, ReportTypes.Intervention],
+      },
+  ) { }
 
   /**
    * @inheritDoc

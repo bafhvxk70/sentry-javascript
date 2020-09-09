@@ -1,9 +1,9 @@
-import { EventProcessor, Hub, Integration, Severity } from '@sentry/types';
-import { fill, getGlobalObject, safeJoin } from '@sentry/utils';
+import { EventProcessor, Hub, Integration, Severity } from '@beidou/types';
+import { fill, getGlobalObject, safeJoin } from '@beidou/utils';
 
 const global = getGlobalObject<Window | NodeJS.Global>();
 
-/** Send Console API calls as Sentry Events */
+/** Send Console API calls as Beidou Events */
 export class CaptureConsole implements Integration {
   /**
    * @inheritDoc

@@ -1,4 +1,4 @@
-import { ExtendedError } from '@sentry/types';
+import { ExtendedError } from '@beidou/types';
 import { expect } from 'chai';
 import { stub } from 'sinon';
 

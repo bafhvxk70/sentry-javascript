@@ -1,17 +1,17 @@
-describe("breadcrumbs", function() {
+describe("breadcrumbs", function () {
   it(
     optional("should record an XMLHttpRequest with a handler", IS_LOADER),
-    function() {
-      return runInSandbox(sandbox, { manual: true }, function() {
+    function () {
+      return runInSandbox(sandbox, { manual: true }, function () {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/base/subjects/example.json");
-        xhr.onreadystatechange = function() {};
+        xhr.onreadystatechange = function () { };
         xhr.send();
-        waitForXHR(xhr, function() {
-          Sentry.captureMessage("test");
+        waitForXHR(xhr, function () {
+          Beidou.captureMessage("test");
           window.finalizeManualTest();
         });
-      }).then(function(summary) {
+      }).then(function (summary) {
         // The async loader doesn't wrap XHR
         if (IS_LOADER) {
           return;
@@ -29,19 +29,19 @@ describe("breadcrumbs", function() {
       "should record an XMLHttpRequest with a handler attached after send was called",
       IS_LOADER
     ),
-    function() {
-      return runInSandbox(sandbox, { manual: true }, function() {
+    function () {
+      return runInSandbox(sandbox, { manual: true }, function () {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/base/subjects/example.json");
         xhr.send();
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
           window.handlerCalled = true;
         };
-        waitForXHR(xhr, function() {
-          Sentry.captureMessage("test");
+        waitForXHR(xhr, function () {
+          Beidou.captureMessage("test");
           window.finalizeManualTest();
         });
-      }).then(function(summary) {
+      }).then(function (summary) {
         // The async loader doesn't wrap XHR
         if (IS_LOADER) {
           return;
@@ -62,16 +62,16 @@ describe("breadcrumbs", function() {
       "should record an XMLHttpRequest without any handlers set",
       IS_LOADER
     ),
-    function() {
-      return runInSandbox(sandbox, { manual: true }, function() {
+    function () {
+      return runInSandbox(sandbox, { manual: true }, function () {
         var xhr = new XMLHttpRequest();
         xhr.open("get", "/base/subjects/example.json");
         xhr.send();
-        waitForXHR(xhr, function() {
-          Sentry.captureMessage("test");
+        waitForXHR(xhr, function () {
+          Beidou.captureMessage("test");
           window.finalizeManualTest();
         });
-      }).then(function(summary) {
+      }).then(function (summary) {
         // The async loader doesn't wrap XHR
         if (IS_LOADER) {
           return;
@@ -84,26 +84,26 @@ describe("breadcrumbs", function() {
     }
   );
 
-  it("should record a fetch request", function() {
-    return runInSandbox(sandbox, { manual: true }, function() {
+  it("should record a fetch request", function () {
+    return runInSandbox(sandbox, { manual: true }, function () {
       fetch("/base/subjects/example.json", {
         method: "Get",
       })
         .then(
-          function() {
-            Sentry.captureMessage("test");
+          function () {
+            Beidou.captureMessage("test");
           },
-          function() {
-            Sentry.captureMessage("test");
+          function () {
+            Beidou.captureMessage("test");
           }
         )
-        .then(function() {
+        .then(function () {
           window.finalizeManualTest();
         })
-        .catch(function() {
+        .catch(function () {
           window.finalizeManualTest();
         });
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap fetch, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -132,24 +132,24 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should record a fetch request with Request obj instead of URL string", function() {
-    return runInSandbox(sandbox, { manual: true }, function() {
+  it("should record a fetch request with Request obj instead of URL string", function () {
+    return runInSandbox(sandbox, { manual: true }, function () {
       fetch(new Request("/base/subjects/example.json"))
         .then(
-          function() {
-            Sentry.captureMessage("test");
+          function () {
+            Beidou.captureMessage("test");
           },
-          function() {
-            Sentry.captureMessage("test");
+          function () {
+            Beidou.captureMessage("test");
           }
         )
-        .then(function() {
+        .then(function () {
           window.finalizeManualTest();
         })
-        .catch(function() {
+        .catch(function () {
           window.finalizeManualTest();
         });
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap fetch, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -181,24 +181,24 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should record a fetch request with an arbitrary type argument", function() {
-    return runInSandbox(sandbox, { manual: true }, function() {
+  it("should record a fetch request with an arbitrary type argument", function () {
+    return runInSandbox(sandbox, { manual: true }, function () {
       fetch(123)
         .then(
-          function() {
-            Sentry.captureMessage("test");
+          function () {
+            Beidou.captureMessage("test");
           },
-          function() {
-            Sentry.captureMessage("test");
+          function () {
+            Beidou.captureMessage("test");
           }
         )
-        .then(function() {
+        .then(function () {
           window.finalizeManualTest();
         })
-        .catch(function() {
+        .catch(function () {
           window.finalizeManualTest();
         });
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap fetch, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -221,15 +221,15 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should provide a hint for dom events that includes event name and event itself", function() {
-    return runInSandbox(sandbox, function() {
+  it("should provide a hint for dom events that includes event name and event itself", function () {
+    return runInSandbox(sandbox, function () {
       var input = document.getElementsByTagName("input")[0];
-      var clickHandler = function() {};
+      var clickHandler = function () { };
       input.addEventListener("click", clickHandler);
       var click = new MouseEvent("click");
       input.dispatchEvent(click);
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -243,8 +243,8 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should not fail with click or keypress handler with no callback", function() {
-    return runInSandbox(sandbox, function() {
+  it("should not fail with click or keypress handler with no callback", function () {
+    return runInSandbox(sandbox, function () {
       var input = document.getElementsByTagName("input")[0];
       input.addEventListener("click", undefined);
       input.addEventListener("keypress", undefined);
@@ -255,8 +255,8 @@ describe("breadcrumbs", function() {
       var keypress = new KeyboardEvent("keypress");
       input.dispatchEvent(keypress);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -281,18 +281,18 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should not fail with custom event", function() {
-    return runInSandbox(sandbox, function() {
+  it("should not fail with custom event", function () {
+    return runInSandbox(sandbox, function () {
       var input = document.getElementsByTagName("input")[0];
-      input.addEventListener("build", function(evt) {
+      input.addEventListener("build", function (evt) {
         evt.stopPropagation();
       });
 
       var customEvent = new CustomEvent("build", { detail: 1 });
       input.dispatchEvent(customEvent);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -304,16 +304,16 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should not fail with custom event and handler with no callback", function() {
-    return runInSandbox(sandbox, function() {
+  it("should not fail with custom event and handler with no callback", function () {
+    return runInSandbox(sandbox, function () {
       var input = document.getElementsByTagName("input")[0];
       input.addEventListener("build", undefined);
 
       var customEvent = new CustomEvent("build", { detail: 1 });
       input.dispatchEvent(customEvent);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -325,13 +325,13 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should record a mouse click on element WITH click handler present", function() {
-    return runInSandbox(sandbox, function() {
+  it("should record a mouse click on element WITH click handler present", function () {
+    return runInSandbox(sandbox, function () {
       // add an event listener to the input. we want to make sure that
       // our breadcrumbs still work even if the page has an event listener
       // on an element that cancels event bubbling
       var input = document.getElementsByTagName("input")[0];
-      var clickHandler = function(evt) {
+      var clickHandler = function (evt) {
         evt.stopPropagation(); // don't bubble
       };
       input.addEventListener("click", clickHandler);
@@ -340,8 +340,8 @@ describe("breadcrumbs", function() {
       var click = new MouseEvent("click");
       input.dispatchEvent(click);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -357,15 +357,15 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should record a mouse click on element WITHOUT click handler present", function() {
-    return runInSandbox(sandbox, function() {
+  it("should record a mouse click on element WITHOUT click handler present", function () {
+    return runInSandbox(sandbox, function () {
       // click <input/>
       var click = new MouseEvent("click");
       var input = document.getElementsByTagName("input")[0];
       input.dispatchEvent(click);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -381,9 +381,9 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should only record a SINGLE mouse click for a tree of elements with event listeners", function() {
-    return runInSandbox(sandbox, function() {
-      var clickHandler = function() {};
+  it("should only record a SINGLE mouse click for a tree of elements with event listeners", function () {
+    return runInSandbox(sandbox, function () {
+      var clickHandler = function () { };
 
       // mousemove event shouldnt clobber subsequent "breadcrumbed" events (see #724)
       document.querySelector(".a").addEventListener("mousemove", clickHandler);
@@ -397,8 +397,8 @@ describe("breadcrumbs", function() {
       var input = document.querySelector(".a"); // leaf node
       input.dispatchEvent(click);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -414,9 +414,9 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should bail out if accessing the `type` and `target` properties of an event throw an exception", function() {
-    // see: https://github.com/getsentry/sentry-javascript/issues/768
-    return runInSandbox(sandbox, function() {
+  it("should bail out if accessing the `type` and `target` properties of an event throw an exception", function () {
+    // see: https://github.com/getbeidou/beidou-javascript/issues/768
+    return runInSandbox(sandbox, function () {
       // click <input/>
       var click = new MouseEvent("click");
       function kaboom() {
@@ -427,9 +427,9 @@ describe("breadcrumbs", function() {
 
       var input = document.querySelector(".a"); // leaf node
 
-      Sentry.captureMessage("test");
+      Beidou.captureMessage("test");
       input.dispatchEvent(click);
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -441,8 +441,8 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it('should record consecutive keypress events into a single "input" breadcrumb', function() {
-    return runInSandbox(sandbox, function() {
+  it('should record consecutive keypress events into a single "input" breadcrumb', function () {
+    return runInSandbox(sandbox, function () {
       // keypress <input/> twice
       var keypress1 = new KeyboardEvent("keypress");
       var keypress2 = new KeyboardEvent("keypress");
@@ -451,8 +451,8 @@ describe("breadcrumbs", function() {
       input.dispatchEvent(keypress1);
       input.dispatchEvent(keypress2);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -473,14 +473,14 @@ describe("breadcrumbs", function() {
       "should flush keypress breadcrumbs when an error is thrown",
       IS_LOADER
     ),
-    function() {
-      return runInSandbox(sandbox, function() {
+    function () {
+      return runInSandbox(sandbox, function () {
         // keypress <input/>
         var keypress = new KeyboardEvent("keypress");
         var input = document.getElementsByTagName("input")[0];
         input.dispatchEvent(keypress);
         foo(); // throw exception
-      }).then(function(summary) {
+      }).then(function (summary) {
         if (IS_LOADER) {
           return;
         }
@@ -497,8 +497,8 @@ describe("breadcrumbs", function() {
     }
   );
 
-  it("should flush keypress breadcrumb when input event occurs immediately after", function() {
-    return runInSandbox(sandbox, function() {
+  it("should flush keypress breadcrumb when input event occurs immediately after", function () {
+    return runInSandbox(sandbox, function () {
       // 1st keypress <input/>
       var keypress1 = new KeyboardEvent("keypress");
       // click <input/>
@@ -511,8 +511,8 @@ describe("breadcrumbs", function() {
       input.dispatchEvent(click);
       input.dispatchEvent(keypress2);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -540,8 +540,8 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it('should record consecutive keypress events in a contenteditable into a single "input" breadcrumb', function() {
-    return runInSandbox(sandbox, function() {
+  it('should record consecutive keypress events in a contenteditable into a single "input" breadcrumb', function () {
+    return runInSandbox(sandbox, function () {
       // keypress <input/> twice
       var keypress1 = new KeyboardEvent("keypress");
       var keypress2 = new KeyboardEvent("keypress");
@@ -550,8 +550,8 @@ describe("breadcrumbs", function() {
       div.dispatchEvent(keypress1);
       div.dispatchEvent(keypress2);
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -567,20 +567,20 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should record click events that were handled using an object with handleEvent property and call original callback", function() {
-    return runInSandbox(sandbox, function() {
+  it("should record click events that were handled using an object with handleEvent property and call original callback", function () {
+    return runInSandbox(sandbox, function () {
       window.handleEventCalled = false;
 
       var input = document.getElementsByTagName("input")[0];
       input.addEventListener("click", {
-        handleEvent: function() {
+        handleEvent: function () {
           window.handleEventCalled = true;
         },
       });
       input.dispatchEvent(new MouseEvent("click"));
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -597,20 +597,20 @@ describe("breadcrumbs", function() {
     });
   });
 
-  it("should record keypress events that were handled using an object with handleEvent property and call original callback", function() {
-    return runInSandbox(sandbox, function() {
+  it("should record keypress events that were handled using an object with handleEvent property and call original callback", function () {
+    return runInSandbox(sandbox, function () {
       window.handleEventCalled = false;
 
       var input = document.getElementsByTagName("input")[0];
       input.addEventListener("keypress", {
-        handleEvent: function() {
+        handleEvent: function () {
           window.handleEventCalled = true;
         },
       });
       input.dispatchEvent(new KeyboardEvent("keypress"));
 
-      Sentry.captureMessage("test");
-    }).then(function(summary) {
+      Beidou.captureMessage("test");
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't wrap event listeners, but we should receive the event without breadcrumbs
         assert.lengthOf(summary.events, 1);
@@ -632,8 +632,8 @@ describe("breadcrumbs", function() {
       "should record history.[pushState|replaceState] changes as navigation breadcrumbs",
       IS_LOADER
     ),
-    function() {
-      return runInSandbox(sandbox, function() {
+    function () {
+      return runInSandbox(sandbox, function () {
         history.pushState({}, "", "/foo");
         history.pushState({}, "", "/bar?a=1#fragment");
         history.pushState({}, "", {}); // pushState calls toString on non-string args
@@ -642,8 +642,8 @@ describe("breadcrumbs", function() {
         // (e.g. document running mocha) ... instead just "emulate" a back button
         // press by calling replaceState
         history.replaceState({}, "", "/bar?a=1#fragment");
-        Sentry.captureMessage("test");
-      }).then(function(summary) {
+        Beidou.captureMessage("test");
+      }).then(function (summary) {
         if (IS_LOADER) {
           // The async loader doesn't wrap history
           return;
@@ -695,10 +695,10 @@ describe("breadcrumbs", function() {
 
   it(
     optional("should preserve native code detection compatibility", IS_LOADER),
-    function() {
-      return runInSandbox(sandbox, { manual: true }, function() {
+    function () {
+      return runInSandbox(sandbox, { manual: true }, function () {
         window.resolveTest();
-      }).then(function() {
+      }).then(function () {
         if (IS_LOADER) {
           // The async loader doesn't wrap anything
           return;
@@ -733,16 +733,16 @@ describe("breadcrumbs", function() {
     }
   );
 
-  it("should capture console breadcrumbs", function() {
-    return runInSandbox(sandbox, { manual: true }, function() {
+  it("should capture console breadcrumbs", function () {
+    return runInSandbox(sandbox, { manual: true }, function () {
       window.allowConsoleBreadcrumbs = true;
       var logs = document.createElement("script");
       logs.src = "/base/subjects/console-logs.js";
-      logs.onload = function() {
+      logs.onload = function () {
         window.finalizeManualTest();
       };
       document.head.appendChild(logs);
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (IS_LOADER) {
         // The async loader doesn't capture breadcrumbs, but we should receive the event without them
         assert.lengthOf(summary.events, 1);

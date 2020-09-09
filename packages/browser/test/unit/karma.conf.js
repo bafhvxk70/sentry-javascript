@@ -18,11 +18,11 @@ module.exports = config => {
         declaration: false,
         declarationMap: false,
         paths: {
-          '@sentry/utils/*': ['../../../utils/src/*'],
-          '@sentry/core': ['../../../core/src'],
-          '@sentry/hub': ['../../../hub/src'],
-          '@sentry/types': ['../../../types/src'],
-          '@sentry/minimal': ['../../../minimal/src'],
+          '@beidou/utils/*': ['../../../utils/src/*'],
+          '@beidou/core': ['../../../core/src'],
+          '@beidou/hub': ['../../../hub/src'],
+          '@beidou/types': ['../../../types/src'],
+          '@beidou/minimal': ['../../../minimal/src'],
         },
       },
       bundlerOptions: {

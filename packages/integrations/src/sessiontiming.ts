@@ -1,6 +1,6 @@
-import { Event, EventProcessor, Hub, Integration } from '@sentry/types';
+import { Event, EventProcessor, Hub, Integration } from '@beidou/types';
 
-/** This function adds duration since Sentry was initialized till the time event was sent */
+/** This function adds duration since Beidou was initialized till the time event was sent */
 export class SessionTiming implements Integration {
   /**
    * @inheritDoc

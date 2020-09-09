@@ -1,19 +1,19 @@
 /* eslint-disable max-lines */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EventProcessor, Hub, Integration, IntegrationClass, Scope, Span, Transaction } from '@sentry/types';
-import { basename, getGlobalObject, logger, timestampWithMs } from '@sentry/utils';
+import { EventProcessor, Hub, Integration, IntegrationClass, Scope, Span, Transaction } from '@beidou/types';
+import { basename, getGlobalObject, logger, timestampWithMs } from '@beidou/utils';
 
 /**
  * Used to extract Tracing integration from the current client,
- * without the need to import `Tracing` itself from the @sentry/apm package.
- * @deprecated as @sentry/tracing should be used over @sentry/apm.
+ * without the need to import `Tracing` itself from the @beidou/apm package.
+ * @deprecated as @beidou/tracing should be used over @beidou/apm.
  */
 const TRACING_GETTER = ({
   id: 'Tracing',
 } as any) as IntegrationClass<Integration>;
 
 /**
- * Used to extract BrowserTracing integration from @sentry/tracing
+ * Used to extract BrowserTracing integration from @beidou/tracing
  */
 const BROWSER_TRACING_GETTER = ({
   id: 'BrowserTracing',
@@ -41,7 +41,7 @@ interface ViewModel {
     propsData?: { [key: string]: any };
     _componentTag?: string;
     __file?: string;
-    $_sentryPerfHook?: boolean;
+    $_beidouPerfHook?: boolean;
   };
   $once(hook: string, cb: () => void): void;
 }
@@ -52,7 +52,7 @@ interface IntegrationOptions {
   Vue: VueInstance;
 
   /**
-   * When set to `false`, Sentry will suppress reporting of all props data
+   * When set to `false`, Beidou will suppress reporting of all props data
    * from your Vue components for privacy concerns.
    */
   attachProps: boolean;
@@ -80,7 +80,7 @@ interface TracingOptions {
    * Or to an array of specific component names (case-sensitive).
    */
   trackComponents: boolean | string[];
-  /** How long to wait until the tracked root activity is marked as finished and sent of to Sentry */
+  /** How long to wait until the tracked root activity is marked as finished and sent of to Beidou */
   timeout: number;
   /**
    * List of hooks to keep track of during component lifecycle.
@@ -90,7 +90,7 @@ interface TracingOptions {
   hooks: Operation[];
 }
 
-/** Optional metadata attached to Sentry Event */
+/** Optional metadata attached to Beidou Event */
 interface Metadata {
   [key: string]: any;
   componentName?: string;
@@ -228,10 +228,10 @@ export class Vue implements Integration {
   // eslint-disable-next-line @typescript-eslint/typedef
   private readonly _applyTracingHooks = (vm: ViewModel, getCurrentHub: () => Hub): void => {
     // Don't attach twice, just in case
-    if (vm.$options.$_sentryPerfHook) {
+    if (vm.$options.$_beidouPerfHook) {
       return;
     }
-    vm.$options.$_sentryPerfHook = true;
+    vm.$options.$_beidouPerfHook = true;
 
     const name = this._getComponentName(vm);
     const rootMount = name === ROOT_COMPONENT_NAME;
@@ -254,7 +254,7 @@ export class Vue implements Integration {
           // Create an activity on the first event call. There'll be no second call, as rootSpan will be in place,
           // thus new event handler won't be attached.
 
-          // We do this whole dance with `TRACING_GETTER` to prevent `@sentry/apm` from becoming a peerDependency.
+          // We do this whole dance with `TRACING_GETTER` to prevent `@beidou/apm` from becoming a peerDependency.
           // We also need to ask for the `.constructor`, as `pushActivity` and `popActivity` are static, not instance methods.
           /* eslint-disable @typescript-eslint/no-unsafe-member-access */
           // eslint-disable-next-line deprecation/deprecation
@@ -268,7 +268,7 @@ export class Vue implements Integration {
                 op: 'Vue',
               });
             }
-            // Use functionality from @sentry/tracing
+            // Use functionality from @beidou/tracing
           } else {
             const activeTransaction = getActiveTransaction(getCurrentHub());
             if (activeTransaction) {
@@ -349,7 +349,7 @@ export class Vue implements Integration {
 
     this._rootSpanTimer = setTimeout(() => {
       if (this._tracingActivity) {
-        // We do this whole dance with `TRACING_GETTER` to prevent `@sentry/apm` from becoming a peerDependency.
+        // We do this whole dance with `TRACING_GETTER` to prevent `@beidou/apm` from becoming a peerDependency.
         // We also need to ask for the `.constructor`, as `pushActivity` and `popActivity` are static, not instance methods.
         // eslint-disable-next-line deprecation/deprecation
         const tracingIntegration = getCurrentHub().getIntegration(TRACING_GETTER);
@@ -359,7 +359,7 @@ export class Vue implements Integration {
         }
       }
 
-      // We should always finish the span, only should pop activity if using @sentry/apm
+      // We should always finish the span, only should pop activity if using @beidou/apm
       if (this._rootSpan) {
         this._rootSpan.finish(timestamp);
       }
@@ -383,7 +383,7 @@ export class Vue implements Integration {
     });
   }
 
-  /** Inject Sentry's handler into owns Vue's error handler  */
+  /** Inject Beidou's handler into owns Vue's error handler  */
   private _attachErrorHandler(getCurrentHub: () => Hub): void {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     const currentErrorHandler = this._options.Vue.config.errorHandler;

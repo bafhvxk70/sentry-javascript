@@ -26,9 +26,9 @@ describe('Tracekit - Custom Tests', () => {
 
   it('should parse exceptions for react-native-v8', () => {
     const REACT_NATIVE_V8_EXCEPTION = {
-      message: 'Manually triggered crash to test Sentry reporting',
+      message: 'Manually triggered crash to test Beidou reporting',
       name: 'Error',
-      stack: `Error: Manually triggered crash to test Sentry reporting
+      stack: `Error: Manually triggered crash to test Beidou reporting
           at Object.onPress(index.android.bundle:2342:3773)
           at s.touchableHandlePress(index.android.bundle:214:2048)
           at s._performSideEffectsForTransition(index.android.bundle:198:9608)

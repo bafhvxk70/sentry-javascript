@@ -37,14 +37,14 @@ describe('Parsers', () => {
     });
 
     describe('removed bottom frame if its internally reserved word (internal API)', async () => {
-      it('reserved sentryWrapped', () => {
+      it('reserved beidouWrapped', () => {
         const stack = [
           { context: ['x'], column: 1, line: 3, url: 'anything.js', func: 'foo', args: [] },
           { context: ['x'], column: 1, line: 2, url: 'anything.js', func: 'bar', args: [] },
-          { context: ['x'], column: 1, line: 1, url: 'anything.js', func: 'sentryWrapped', args: [] },
+          { context: ['x'], column: 1, line: 1, url: 'anything.js', func: 'beidouWrapped', args: [] },
         ];
 
-        // Should remove `sentryWrapped` as its a name considered "internal"
+        // Should remove `beidouWrapped` as its a name considered "internal"
         const frames = prepareFramesForEvent(stack);
 
         expect(frames.length).equal(2);
@@ -58,10 +58,10 @@ describe('Parsers', () => {
         { context: ['x'], column: 1, line: 4, url: 'anything.js', func: 'captureMessage', args: [] },
         { context: ['x'], column: 1, line: 3, url: 'anything.js', func: 'foo', args: [] },
         { context: ['x'], column: 1, line: 2, url: 'anything.js', func: 'bar', args: [] },
-        { context: ['x'], column: 1, line: 1, url: 'anything.js', func: 'sentryWrapped', args: [] },
+        { context: ['x'], column: 1, line: 1, url: 'anything.js', func: 'beidouWrapped', args: [] },
       ];
 
-      // Should remove `captureMessage` and `sentryWrapped` as its a name considered "internal"
+      // Should remove `captureMessage` and `beidouWrapped` as its a name considered "internal"
       const frames = prepareFramesForEvent(stack);
 
       expect(frames.length).equal(2);

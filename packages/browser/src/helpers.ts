@@ -1,6 +1,6 @@
-import { API, captureException, withScope } from '@sentry/core';
-import { DsnLike, Event as SentryEvent, Mechanism, Scope, WrappedFunction } from '@sentry/types';
-import { addExceptionMechanism, addExceptionTypeValue, logger } from '@sentry/utils';
+import { API, captureException, withScope } from '@beidou/core';
+import { DsnLike, Event as BeidouEvent, Mechanism, Scope, WrappedFunction } from '@beidou/types';
+import { addExceptionMechanism, addExceptionTypeValue, logger } from '@beidou/utils';
 
 let ignoreOnError: number = 0;
 
@@ -23,7 +23,7 @@ export function ignoreNextOnError(): void {
 }
 
 /**
- * Instruments the given function and sends an event to Sentry every time the
+ * Instruments the given function and sends an event to Beidou every time the
  * function throws an exception.
  *
  * @param fn A function to wrap.
@@ -44,13 +44,13 @@ export function wrap(
 
   try {
     // We don't wanna wrap it twice
-    if (fn.__sentry__) {
+    if (fn.__beidou__) {
       return fn;
     }
 
     // If this has already been wrapped in the past, return that wrapped function
-    if (fn.__sentry_wrapped__) {
-      return fn.__sentry_wrapped__;
+    if (fn.__beidou_wrapped__) {
+      return fn.__beidou_wrapped__;
     }
   } catch (e) {
     // Just accessing custom props in some Selenium environments
@@ -61,7 +61,7 @@ export function wrap(
 
   /* eslint-disable prefer-rest-params */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sentryWrapped: WrappedFunction = function(this: any): void {
+  const beidouWrapped: WrappedFunction = function (this: any): void {
     const args = Array.prototype.slice.call(arguments);
 
     try {
@@ -74,22 +74,22 @@ export function wrap(
 
       if (fn.handleEvent) {
         // Attempt to invoke user-land function
-        // NOTE: If you are a Sentry user, and you are seeing this stack frame, it
-        //       means the sentry.javascript SDK caught an error invoking your application code. This
-        //       is expected behavior and NOT indicative of a bug with sentry.javascript.
+        // NOTE: If you are a Beidou user, and you are seeing this stack frame, it
+        //       means the beidou.javascript SDK caught an error invoking your application code. This
+        //       is expected behavior and NOT indicative of a bug with beidou.javascript.
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         return fn.handleEvent.apply(this, wrappedArguments);
       }
       // Attempt to invoke user-land function
-      // NOTE: If you are a Sentry user, and you are seeing this stack frame, it
-      //       means the sentry.javascript SDK caught an error invoking your application code. This
-      //       is expected behavior and NOT indicative of a bug with sentry.javascript.
+      // NOTE: If you are a Beidou user, and you are seeing this stack frame, it
+      //       means the beidou.javascript SDK caught an error invoking your application code. This
+      //       is expected behavior and NOT indicative of a bug with beidou.javascript.
       return fn.apply(this, wrappedArguments);
     } catch (ex) {
       ignoreNextOnError();
 
       withScope((scope: Scope) => {
-        scope.addEventProcessor((event: SentryEvent) => {
+        scope.addEventProcessor((event: BeidouEvent) => {
           const processedEvent = { ...event };
 
           if (options.mechanism) {
@@ -114,31 +114,31 @@ export function wrap(
   /* eslint-enable prefer-rest-params */
 
   // Accessing some objects may throw
-  // ref: https://github.com/getsentry/sentry-javascript/issues/1168
+  // ref: https://github.com/getbeidou/beidou-javascript/issues/1168
   try {
     for (const property in fn) {
       if (Object.prototype.hasOwnProperty.call(fn, property)) {
-        sentryWrapped[property] = fn[property];
+        beidouWrapped[property] = fn[property];
       }
     }
-  } catch (_oO) {} // eslint-disable-line no-empty
+  } catch (_oO) { } // eslint-disable-line no-empty
 
   fn.prototype = fn.prototype || {};
-  sentryWrapped.prototype = fn.prototype;
+  beidouWrapped.prototype = fn.prototype;
 
-  Object.defineProperty(fn, '__sentry_wrapped__', {
+  Object.defineProperty(fn, '__beidou_wrapped__', {
     enumerable: false,
-    value: sentryWrapped,
+    value: beidouWrapped,
   });
 
   // Signal that this function has been wrapped/filled already
   // for both debugging and to prevent it to being wrapped/filled twice
-  Object.defineProperties(sentryWrapped, {
-    __sentry__: {
+  Object.defineProperties(beidouWrapped, {
+    __beidou__: {
       enumerable: false,
       value: true,
     },
-    __sentry_original__: {
+    __beidou_original__: {
       enumerable: false,
       value: fn,
     },
@@ -146,18 +146,18 @@ export function wrap(
 
   // Restore original function name (not all browsers allow that)
   try {
-    const descriptor = Object.getOwnPropertyDescriptor(sentryWrapped, 'name') as PropertyDescriptor;
+    const descriptor = Object.getOwnPropertyDescriptor(beidouWrapped, 'name') as PropertyDescriptor;
     if (descriptor.configurable) {
-      Object.defineProperty(sentryWrapped, 'name', {
+      Object.defineProperty(beidouWrapped, 'name', {
         get(): string {
           return fn.name;
         },
       });
     }
     // eslint-disable-next-line no-empty
-  } catch (_oO) {}
+  } catch (_oO) { }
 
-  return sentryWrapped;
+  return beidouWrapped;
 }
 
 /**

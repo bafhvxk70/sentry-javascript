@@ -1,4 +1,4 @@
-import { Event, EventHint, Options, Severity } from '@sentry/types';
+import { Event, EventHint, Options, Severity } from '@beidou/types';
 import {
   addExceptionMechanism,
   addExceptionTypeValue,
@@ -9,7 +9,7 @@ import {
   isEvent,
   isPlainObject,
   SyncPromise,
-} from '@sentry/utils';
+} from '@beidou/utils';
 
 import { eventFromPlainObject, eventFromStacktrace, prepareFramesForEvent } from './parsers';
 import { computeStackTrace } from './tracekit';

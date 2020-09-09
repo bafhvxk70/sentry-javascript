@@ -4,8 +4,8 @@ function evaluateInSandbox(sandbox, code) {
     sandbox.contentWindow &&
     sandbox.contentWindow.eval(
       "window.originalBuiltIns.setTimeout.call(window, " +
-        code.toString() +
-        ");"
+      code.toString() +
+      ");"
     );
 }
 
@@ -18,18 +18,18 @@ function runInSandbox(sandbox, options, code) {
   }
 
   var resolveTest;
-  var donePromise = new Promise(function(resolve) {
+  var donePromise = new Promise(function (resolve) {
     resolveTest = resolve;
   });
-  sandbox.contentWindow.resolveTest = function(summary) {
+  sandbox.contentWindow.resolveTest = function (summary) {
     clearTimeout(lastResort);
     resolveTest(summary);
   };
 
   // If by some unexplainable way we reach the timeout limit, try to finalize the test and pray for the best
   // NOTE: 5000 so it's easier to grep for all timeout instances (shell.js, loader-specific.js and here)
-  var lastResort = setTimeout(function() {
-    var force = function() {
+  var lastResort = setTimeout(function () {
+    var force = function () {
       window.resolveTest({
         events: events,
         breadcrumbs: breadcrumbs,
@@ -41,7 +41,7 @@ function runInSandbox(sandbox, options, code) {
     }
   }, 5000 - 500);
 
-  var finalize = function() {
+  var finalize = function () {
     var summary = {
       events: events,
       eventHints: eventHints,
@@ -50,20 +50,20 @@ function runInSandbox(sandbox, options, code) {
       window: window,
     };
 
-    Sentry.onLoad(function() {
-      setTimeout(function() {
-        Sentry.flush()
-          .then(function() {
+    Beidou.onLoad(function () {
+      setTimeout(function () {
+        Beidou.flush()
+          .then(function () {
             window.resolveTest(summary);
           })
-          .catch(function() {
+          .catch(function () {
             window.resolveTest(summary);
           });
       });
     });
   };
 
-  sandbox.contentWindow.finalizeManualTest = function() {
+  sandbox.contentWindow.finalizeManualTest = function () {
     evaluateInSandbox(sandbox, finalize.toString());
   };
 
@@ -80,7 +80,7 @@ function createSandbox(done, file) {
   var sandbox = document.createElement("iframe");
   sandbox.style.display = "none";
   sandbox.src = "/base/variants/" + file + ".html";
-  sandbox.onload = function() {
+  sandbox.onload = function () {
     done();
   };
   document.body.appendChild(sandbox);

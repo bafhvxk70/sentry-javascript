@@ -1,5 +1,5 @@
-import { Event, EventProcessor, Hub, Integration, StackFrame, Stacktrace } from '@sentry/types';
-import { basename, relative } from '@sentry/utils';
+import { Event, EventProcessor, Hub, Integration, StackFrame, Stacktrace } from '@beidou/types';
+import { basename, relative } from '@beidou/utils';
 
 type StackFrameIteratee = (frame: StackFrame) => StackFrame;
 
@@ -71,8 +71,8 @@ export class RewriteFrames implements Integration {
     if (isWindowsFrame || startsWithSlash) {
       const filename = isWindowsFrame
         ? frame.filename
-            .replace(/^[A-Z]:/, '') // remove Windows-style prefix
-            .replace(/\\/g, '/') // replace all `\\` instances with `/`
+          .replace(/^[A-Z]:/, '') // remove Windows-style prefix
+          .replace(/\\/g, '/') // replace all `\\` instances with `/`
         : frame.filename;
       const base = this._root ? relative(this._root, filename) : basename(filename);
       frame.filename = `app:///${base}`;

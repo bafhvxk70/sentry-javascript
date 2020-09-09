@@ -1,6 +1,6 @@
-import { addGlobalEventProcessor, getCurrentHub } from '@sentry/core';
-import { Event, Integration } from '@sentry/types';
-import { getGlobalObject } from '@sentry/utils';
+import { addGlobalEventProcessor, getCurrentHub } from '@beidou/core';
+import { Event, Integration } from '@beidou/types';
+import { getGlobalObject } from '@beidou/utils';
 
 const global = getGlobalObject<Window>();
 

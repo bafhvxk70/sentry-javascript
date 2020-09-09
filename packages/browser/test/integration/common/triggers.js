@@ -18,7 +18,7 @@ function throwNonError() {
   try {
     throw { foo: "bar" };
   } catch (o_O) {
-    Sentry.captureException(o_O);
+    Beidou.captureException(o_O);
   }
 }
 
@@ -28,7 +28,7 @@ function throwError(message) {
   try {
     throw new Error(message);
   } catch (o_O) {
-    Sentry.captureException(o_O);
+    Beidou.captureException(o_O);
   }
 }
 
@@ -36,7 +36,7 @@ function throwRandomError() {
   try {
     throw new Error("Exception no " + (Date.now() + Math.random()));
   } catch (o_O) {
-    Sentry.captureException(o_O);
+    Beidou.captureException(o_O);
   }
 }
 
@@ -48,11 +48,11 @@ function throwSameConsecutiveErrors(message) {
 function captureMessage(message) {
   // eslint-disable-next-line no-param-reassign
   message = message || "message";
-  Sentry.captureMessage(message);
+  Beidou.captureMessage(message);
 }
 
 function captureRandomMessage() {
-  Sentry.captureMessage("Message no " + (Date.now() + Math.random()));
+  Beidou.captureMessage("Message no " + (Date.now() + Math.random()));
 }
 
 function captureSameConsecutiveMessages(message) {

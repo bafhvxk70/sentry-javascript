@@ -1,5 +1,5 @@
-import { Event, EventHint, EventProcessor, ExtendedError, Hub, Integration } from '@sentry/types';
-import { isError, isPlainObject, logger, normalize } from '@sentry/utils';
+import { Event, EventHint, EventProcessor, ExtendedError, Hub, Integration } from '@beidou/types';
+import { isError, isPlainObject, logger, normalize } from '@beidou/utils';
 
 /** JSDoc */
 interface ExtraErrorDataOptions {
@@ -21,7 +21,7 @@ export class ExtraErrorData implements Integration {
   /**
    * @inheritDoc
    */
-  public constructor(private readonly _options: ExtraErrorDataOptions = { depth: 3 }) {}
+  public constructor(private readonly _options: ExtraErrorDataOptions = { depth: 3 }) { }
 
   /**
    * @inheritDoc

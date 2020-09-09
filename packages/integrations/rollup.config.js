@@ -8,10 +8,10 @@ import commonjs from 'rollup-plugin-commonjs';
 const terserInstance = terser({
   mangle: {
     // captureExceptions and captureMessage are public API methods and they don't need to be listed here
-    // as mangler doesn't touch user-facing thing, however sentryWrapped is not, and it would be mangled into a minified version.
+    // as mangler doesn't touch user-facing thing, however beidouWrapped is not, and it would be mangled into a minified version.
     // We need those full names to correctly detect our internal frames for stripping.
     // I listed all of them here just for the clarity sake, as they are all used in the frames manipulation process.
-    reserved: ['captureException', 'captureMessage', 'sentryWrapped'],
+    reserved: ['captureException', 'captureMessage', 'beidouWrapped'],
     properties: false,
   },
 });
@@ -24,11 +24,11 @@ const plugins = [
         declaration: false,
         module: 'ES2015',
         paths: {
-          '@sentry/utils': ['../utils/src'],
-          '@sentry/core': ['../core/src'],
-          '@sentry/hub': ['../hub/src'],
-          '@sentry/types': ['../types/src'],
-          '@sentry/minimal': ['../minimal/src'],
+          '@beidou/utils': ['../utils/src'],
+          '@beidou/core': ['../core/src'],
+          '@beidou/hub': ['../hub/src'],
+          '@beidou/types': ['../types/src'],
+          '@beidou/minimal': ['../minimal/src'],
         },
       },
     },
@@ -40,13 +40,13 @@ const plugins = [
   commonjs(),
 ];
 
-function mergeIntoSentry() {
+function mergeIntoBeidou() {
   return `
-  __window.Sentry = __window.Sentry || {};
-  __window.Sentry.Integrations = __window.Sentry.Integrations || {};
+  __window.Beidou = __window.Beidou || {};
+  __window.Beidou.Integrations = __window.Beidou.Integrations || {};
   for (var key in exports) {
     if (Object.prototype.hasOwnProperty.call(exports, key)) {
-      __window.Sentry.Integrations[key] = exports[key];
+      __window.Beidou.Integrations[key] = exports[key];
     }
   }
   `;
@@ -74,7 +74,7 @@ function loadAllIntegrations() {
         output: {
           banner: '(function (__window) {',
           intro: 'var exports = {};',
-          outro: mergeIntoSentry(),
+          outro: mergeIntoBeidou(),
           footer: '}(window));',
           file: `build/${file.replace('.ts', build.extension)}`,
           format: 'cjs',

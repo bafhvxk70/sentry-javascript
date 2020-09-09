@@ -1,6 +1,6 @@
-import { eventToSentryRequest } from '@sentry/core';
-import { Event, Response, Status } from '@sentry/types';
-import { logger, parseRetryAfterHeader, SyncPromise } from '@sentry/utils';
+import { eventToBeidouRequest } from '@beidou/core';
+import { Event, Response, Status } from '@beidou/types';
+import { logger, parseRetryAfterHeader, SyncPromise } from '@beidou/utils';
 
 import { BaseTransport } from './base';
 
@@ -21,7 +21,7 @@ export class XHRTransport extends BaseTransport {
       });
     }
 
-    const sentryReq = eventToSentryRequest(event, this._api);
+    const beidouReq = eventToBeidouRequest(event, this._api);
 
     return this._buffer.add(
       new SyncPromise<Response>((resolve, reject) => {
@@ -53,13 +53,13 @@ export class XHRTransport extends BaseTransport {
           reject(request);
         };
 
-        request.open('POST', sentryReq.url);
+        request.open('POST', beidouReq.url);
         for (const header in this.options.headers) {
           if (this.options.headers.hasOwnProperty(header)) {
             request.setRequestHeader(header, this.options.headers[header]);
           }
         }
-        request.send(sentryReq.body);
+        request.send(beidouReq.body);
       }),
     );
   }

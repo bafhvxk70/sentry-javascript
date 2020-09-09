@@ -1,5 +1,5 @@
-import { getCurrentHub, initAndBind, Integrations as CoreIntegrations } from '@sentry/core';
-import { getGlobalObject, SyncPromise } from '@sentry/utils';
+import { getCurrentHub, initAndBind, Integrations as CoreIntegrations } from '@beidou/core';
+import { getGlobalObject, SyncPromise } from '@beidou/utils';
 
 import { BrowserOptions } from './backend';
 import { BrowserClient } from './client';
@@ -17,7 +17,7 @@ export const defaultIntegrations = [
 ];
 
 /**
- * The Sentry Browser SDK Client.
+ * The Beidou Browser SDK Client.
  *
  * To use this SDK, call the {@link init} function as early as possible when
  * loading the web page. To set context information or send manual events, use
@@ -27,7 +27,7 @@ export const defaultIntegrations = [
  *
  * ```
  *
- * import { init } from '@sentry/browser';
+ * import { init } from '@beidou/browser';
  *
  * init({
  *   dsn: '__DSN__',
@@ -38,7 +38,7 @@ export const defaultIntegrations = [
  * @example
  * ```
  *
- * import { configureScope } from '@sentry/browser';
+ * import { configureScope } from '@beidou/browser';
  * configureScope((scope: Scope) => {
  *   scope.setExtra({ battery: 0.7 });
  *   scope.setTag({ user_mode: 'admin' });
@@ -49,7 +49,7 @@ export const defaultIntegrations = [
  * @example
  * ```
  *
- * import { addBreadcrumb } from '@sentry/browser';
+ * import { addBreadcrumb } from '@beidou/browser';
  * addBreadcrumb({
  *   message: 'My Breadcrumb',
  *   // ...
@@ -60,10 +60,10 @@ export const defaultIntegrations = [
  *
  * ```
  *
- * import * as Sentry from '@sentry/browser';
- * Sentry.captureMessage('Hello, world!');
- * Sentry.captureException(new Error('Good bye'));
- * Sentry.captureEvent({
+ * import * as Beidou from '@beidou/browser';
+ * Beidou.captureMessage('Hello, world!');
+ * Beidou.captureException(new Error('Good bye'));
+ * Beidou.captureEvent({
  *   message: 'Manual',
  *   stacktrace: [
  *     // ...
@@ -79,7 +79,7 @@ export function init(options: BrowserOptions = {}): void {
   }
   if (options.release === undefined) {
     const window = getGlobalObject<Window>();
-    // This supports the variable that sentry-webpack-plugin injects
+    // This supports the variable that beidou-webpack-plugin injects
     if (window.SENTRY_RELEASE && window.SENTRY_RELEASE.id) {
       options.release = window.SENTRY_RELEASE.id;
     }

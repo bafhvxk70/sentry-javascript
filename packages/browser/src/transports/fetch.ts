@@ -1,6 +1,6 @@
-import { eventToSentryRequest } from '@sentry/core';
-import { Event, Response, Status } from '@sentry/types';
-import { getGlobalObject, logger, parseRetryAfterHeader, supportsReferrerPolicy, SyncPromise } from '@sentry/utils';
+import { eventToBeidouRequest } from '@beidou/core';
+import { Event, Response, Status } from '@beidou/types';
+import { getGlobalObject, logger, parseRetryAfterHeader, supportsReferrerPolicy, SyncPromise } from '@beidou/utils';
 
 import { BaseTransport } from './base';
 
@@ -23,15 +23,15 @@ export class FetchTransport extends BaseTransport {
       });
     }
 
-    const sentryReq = eventToSentryRequest(event, this._api);
+    const beidouReq = eventToBeidouRequest(event, this._api);
 
     const options: RequestInit = {
-      body: sentryReq.body,
+      body: beidouReq.body,
       method: 'POST',
       // Despite all stars in the sky saying that Edge supports old draft syntax, aka 'never', 'always', 'origin' and 'default
       // https://caniuse.com/#feat=referrer-policy
       // It doesn't. And it throw exception instead of ignoring this parameter...
-      // REF: https://github.com/getsentry/raven-js/issues/1233
+      // REF: https://github.com/getbeidou/raven-js/issues/1233
       referrerPolicy: (supportsReferrerPolicy() ? 'origin' : '') as ReferrerPolicy,
     };
 
@@ -46,7 +46,7 @@ export class FetchTransport extends BaseTransport {
     return this._buffer.add(
       new SyncPromise<Response>((resolve, reject) => {
         global
-          .fetch(sentryReq.url, options)
+          .fetch(beidouReq.url, options)
           .then(response => {
             const status = Status.fromHttpCode(response.status);
 

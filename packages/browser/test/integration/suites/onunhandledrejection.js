@@ -1,12 +1,12 @@
-describe("window.onunhandledrejection", function() {
-  it("should capture unhandledrejection with error", function() {
-    return runInSandbox(sandbox, function() {
+describe("window.onunhandledrejection", function () {
+  it("should capture unhandledrejection with error", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject(new Error("test2"));
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         assert.equal(summary.events[0].exception.values[0].value, "test2");
         assert.equal(summary.events[0].exception.values[0].type, "Error");
@@ -34,9 +34,9 @@ describe("window.onunhandledrejection", function() {
   // to CustomEvents, moving the `promise` and `reason` attributes of the PRE into
   // the CustomEvent's `detail` attribute, since they're not part of CustomEvent's spec
   // see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent and
-  // https://github.com/getsentry/sentry-javascript/issues/2380
-  it("should capture PromiseRejectionEvent cast to CustomEvent with type unhandledrejection", function() {
-    return runInSandbox(sandbox, function() {
+  // https://github.com/getbeidou/beidou-javascript/issues/2380
+  it("should capture PromiseRejectionEvent cast to CustomEvent with type unhandledrejection", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         // this isn't how it happens in real life, in that the promise and reason
         // values come from an actual PromiseRejectionEvent, but it's enough to test
@@ -44,7 +44,7 @@ describe("window.onunhandledrejection", function() {
         window.dispatchEvent(
           new CustomEvent("unhandledrejection", {
             detail: {
-              promise: new Promise(function() {}),
+              promise: new Promise(function () { }),
               // we're testing with an error here but it could be anything - really
               // all we're testing is that it gets dug out correctly
               reason: new Error("test2"),
@@ -54,7 +54,7 @@ describe("window.onunhandledrejection", function() {
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         assert.equal(summary.events[0].exception.values[0].value, "test2");
         assert.equal(summary.events[0].exception.values[0].type, "Error");
@@ -83,14 +83,14 @@ describe("window.onunhandledrejection", function() {
 
   // there's no evidence that this actually happens, but it could, and our code correctly
   // handles it, so might as well prevent future regression on that score
-  it("should capture a random Event with type unhandledrejection", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture a random Event with type unhandledrejection", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         window.dispatchEvent(new Event("unhandledrejection"));
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(
@@ -113,14 +113,14 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should capture unhandledrejection with a string", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture unhandledrejection with a string", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject("test");
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(
@@ -143,14 +143,14 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should capture unhandledrejection with a monster string", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture unhandledrejection with a monster string", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject("test".repeat(100));
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(summary.events[0].exception.values[0].value.length, 253);
@@ -174,14 +174,14 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should capture unhandledrejection with an object", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture unhandledrejection with an object", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject({ a: "b", b: "c", c: "d" });
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(
@@ -204,8 +204,8 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should capture unhandledrejection with an monster object", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture unhandledrejection with an monster object", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         var a = {
           a: "1".repeat("100"),
@@ -218,7 +218,7 @@ describe("window.onunhandledrejection", function() {
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(
@@ -241,14 +241,14 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should capture unhandledrejection with a number", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture unhandledrejection with a number", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject(1337);
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(
@@ -271,14 +271,14 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should capture unhandledrejection with null", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture unhandledrejection with null", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject(null);
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(
@@ -301,14 +301,14 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should capture unhandledrejection with an undefined", function() {
-    return runInSandbox(sandbox, function() {
+  it("should capture unhandledrejection with an undefined", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject(undefined);
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         // non-error rejections don't provide stacktraces so we can skip that assertion
         assert.equal(
@@ -331,20 +331,20 @@ describe("window.onunhandledrejection", function() {
     });
   });
 
-  it("should skip our own failed requests that somehow bubbled-up to unhandledrejection handler", function() {
-    return runInSandbox(sandbox, function() {
+  it("should skip our own failed requests that somehow bubbled-up to unhandledrejection handler", function () {
+    return runInSandbox(sandbox, function () {
       if (supportsOnunhandledRejection()) {
         Promise.reject({
-          __sentry_own_request__: true,
+          __beidou_own_request__: true,
         });
         Promise.reject({
-          __sentry_own_request__: false,
+          __beidou_own_request__: false,
         });
         Promise.reject({});
       } else {
         window.resolveTest({ window: window });
       }
-    }).then(function(summary) {
+    }).then(function (summary) {
       if (summary.window.supportsOnunhandledRejection()) {
         assert.equal(summary.events.length, 2);
       }

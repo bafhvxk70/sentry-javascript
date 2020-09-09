@@ -1,5 +1,5 @@
-import { Event, EventProcessor, Hub, Integration } from '@sentry/types';
-import * as utils from '@sentry/utils';
+import { Event, EventProcessor, Hub, Integration } from '@beidou/types';
+import * as utils from '@beidou/utils';
 
 import { Offline } from '../src/offline';
 

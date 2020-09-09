@@ -1,10 +1,10 @@
 {
-  "name": "@sentry/browser",
+  "name": "@beidou/browser",
   "version": "1.0.0",
-  "description": "Official Sentry SDK for browsers",
-  "repository": "git://github.com/getsentry/sentry-javascript.git",
-  "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/browser",
-  "author": "Sentry",
+  "description": "Official Beidou SDK for browsers",
+  "repository": "git://github.com/getbeidou/beidou-javascript.git",
+  "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/browser",
+  "author": "Beidou",
   "license": "BSD-3-Clause",
   "engines": {
     "node": ">=6"
@@ -16,13 +16,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@sentry/core": "^1.0.0",
-    "@sentry/types": "5.22.3",
-    "@sentry/utils": "^1.0.0",
+    "@beidou/core": "^1.0.0",
+    "@beidou/types": "5.22.3",
+    "@beidou/utils": "^1.0.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@sentry-internal/eslint-config-sdk": "^1.0.0",
+    "@beidou-internal/eslint-config-sdk": "^1.0.0",
     "@types/eslint": "^7.2.0",
     "@types/md5": "2.1.33",
     "btoa": "^1.2.1",

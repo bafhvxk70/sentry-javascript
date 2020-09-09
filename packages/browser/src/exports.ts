@@ -13,7 +13,7 @@ export {
   Status,
   Thread,
   User,
-} from '@sentry/types';
+} from '@beidou/types';
 
 export {
   addGlobalEventProcessor,
@@ -35,7 +35,7 @@ export {
   setTags,
   setUser,
   withScope,
-} from '@sentry/core';
+} from '@beidou/core';
 
 export { BrowserOptions } from './backend';
 export { BrowserClient } from './client';

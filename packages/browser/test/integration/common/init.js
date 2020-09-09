@@ -20,18 +20,18 @@ var dsn =
   "/1";
 
 function initSDK() {
-  Sentry.init({
+  Beidou.init({
     dsn: dsn,
-    integrations: [new Sentry.Integrations.Dedupe()],
+    integrations: [new Beidou.Integrations.Dedupe()],
     attachStacktrace: true,
     ignoreErrors: ["ignoreErrorTest"],
     denyUrls: ["foo.js"],
-    beforeSend: function(event, eventHint) {
+    beforeSend: function (event, eventHint) {
       events.push(event);
       eventHints.push(eventHint);
       return event;
     },
-    beforeBreadcrumb: function(breadcrumb, breadcrumbHint) {
+    beforeBreadcrumb: function (breadcrumb, breadcrumbHint) {
       // Filter console logs as we use them for debugging *a lot* and they are not *that* important
       // But allow then if we explicitly say so (for one of integration tests)
       if (
@@ -43,9 +43,9 @@ function initSDK() {
 
       // One of the tests use manually created breadcrumb without eventId and we want to let it through
       if (
-        breadcrumb.category.indexOf("sentry" === 0) &&
+        breadcrumb.category.indexOf("beidou" === 0) &&
         breadcrumb.event_id &&
-        !window.allowSentryBreadcrumbs
+        !window.allowBeidouBreadcrumbs
       ) {
         return null;
       }

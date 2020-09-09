@@ -1,8 +1,8 @@
-const Sentry = require('../../dist/index.js');
+const Beidou = require('../../dist/index.js');
 const Integrations = require('../../../integrations/dist/dedupe.js');
 
 // Init
-Sentry.init({
+Beidou.init({
   dsn: 'https://completelyrandom@dsn.asdf/42',
   integrations: [new Integrations.Dedupe()],
   beforeSend(_event) {
@@ -16,7 +16,7 @@ Sentry.init({
 });
 
 // Configure
-Sentry.configureScope(scope => {
+Beidou.configureScope(scope => {
   scope.setExtra('foo', 'bar');
   scope.setFingerprint('foo');
   scope.setLevel('warning');
@@ -43,36 +43,36 @@ keypressElement.addEventListener('keypress', () => {
 keypressElement.dispatchEvent(keypressEvent);
 
 // Basic breadcrumb
-Sentry.addBreadcrumb({
+Beidou.addBreadcrumb({
   category: 'basic',
   message: 'crumb',
 });
 
 // Capture methods
-Sentry.captureException(new Error('foo'));
-Sentry.captureException(new Error('foo'), {
+Beidou.captureException(new Error('foo'));
+Beidou.captureException(new Error('foo'), {
   tags: {
     foo: 1,
   },
 });
-Sentry.captureException(new Error('foo'), scope => scope);
-Sentry.captureMessage('bar');
-Sentry.captureMessage('bar', {
+Beidou.captureException(new Error('foo'), scope => scope);
+Beidou.captureMessage('bar');
+Beidou.captureMessage('bar', {
   tags: {
     foo: 1,
   },
 });
-Sentry.captureMessage('bar', scope => scope);
+Beidou.captureMessage('bar', scope => scope);
 
 // Scope behavior
-Sentry.withScope(scope => {
+Beidou.withScope(scope => {
   scope.setExtra('baz', 'qux');
   scope.setFingerprint('baz');
   scope.setLevel('error');
   scope.setTag('baz', 'qux');
   scope.setUser('baz', 'qux');
-  Sentry.captureException(new TypeError('bar'));
-  Sentry.captureMessage('baz');
+  Beidou.captureException(new TypeError('bar'));
+  Beidou.captureMessage('baz');
 });
 
 var xhr = new XMLHttpRequest();

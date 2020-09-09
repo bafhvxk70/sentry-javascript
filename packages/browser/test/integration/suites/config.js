@@ -1,10 +1,10 @@
-describe("config", function() {
-  it("should allow to ignore specific errors", function() {
-    return runInSandbox(sandbox, function() {
-      Sentry.captureException(new Error("foo"));
-      Sentry.captureException(new Error("ignoreErrorTest"));
-      Sentry.captureException(new Error("bar"));
-    }).then(function(summary) {
+describe("config", function () {
+  it("should allow to ignore specific errors", function () {
+    return runInSandbox(sandbox, function () {
+      Beidou.captureException(new Error("foo"));
+      Beidou.captureException(new Error("ignoreErrorTest"));
+      Beidou.captureException(new Error("bar"));
+    }).then(function (summary) {
       assert.equal(summary.events[0].exception.values[0].type, "Error");
       assert.equal(summary.events[0].exception.values[0].value, "foo");
       assert.equal(summary.events[1].exception.values[0].type, "Error");
@@ -12,8 +12,8 @@ describe("config", function() {
     });
   });
 
-  it("should allow to ignore specific urls", function() {
-    return runInSandbox(sandbox, function() {
+  it("should allow to ignore specific urls", function () {
+    return runInSandbox(sandbox, function () {
       /**
        * We always filter on the caller, not the cause of the error
        *
@@ -44,9 +44,9 @@ describe("config", function() {
         " at bar(http://localhost:5000/bar-pass.js:2:3)\n" +
         " at baz(http://localhost:5000/baz-pass.js:2:9)\n";
 
-      Sentry.captureException(urlWithDeniedUrl);
-      Sentry.captureException(urlWithoutDeniedUrl);
-    }).then(function(summary) {
+      Beidou.captureException(urlWithDeniedUrl);
+      Beidou.captureException(urlWithoutDeniedUrl);
+    }).then(function (summary) {
       assert.lengthOf(summary.events, 1);
       assert.equal(summary.events[0].exception.values[0].type, "Error");
       assert.equal(summary.events[0].exception.values[0].value, "pass");
