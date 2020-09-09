@@ -1,5 +1,5 @@
-import { Transaction as TransactionType, TransactionContext } from '@sentry/types';
-import { addInstrumentationHandler, getGlobalObject, logger } from '@sentry/utils';
+import { Transaction as TransactionType, TransactionContext } from '@beidou/types';
+import { addInstrumentationHandler, getGlobalObject, logger } from '@beidou/utils';
 
 // type StartTransaction
 const global = getGlobalObject<Window>();

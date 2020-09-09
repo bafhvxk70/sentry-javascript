@@ -1,5 +1,5 @@
-import { BrowserClient } from '@sentry/browser';
-import { Hub } from '@sentry/hub';
+import { BrowserClient } from '@beidou/browser';
+import { Hub } from '@beidou/hub';
 
 import { addExtensionMethods } from '../src/hubextensions';
 

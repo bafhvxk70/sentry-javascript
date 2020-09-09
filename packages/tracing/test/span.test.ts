@@ -1,5 +1,5 @@
-import { BrowserClient } from '@sentry/browser';
-import { Hub, Scope } from '@sentry/hub';
+import { BrowserClient } from '@beidou/browser';
+import { Hub, Scope } from '@beidou/hub';
 
 import { Span, SpanStatus, TRACEPARENT_REGEXP, Transaction } from '../src';
 

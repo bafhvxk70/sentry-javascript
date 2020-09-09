@@ -1,5 +1,5 @@
-import { getMainCarrier, Hub } from '@sentry/hub';
-import { TransactionContext } from '@sentry/types';
+import { getMainCarrier, Hub } from '@beidou/hub';
+import { TransactionContext } from '@beidou/types';
 
 import { registerErrorInstrumentation } from './errors';
 import { IdleTransaction } from './idletransaction';
@@ -12,7 +12,7 @@ function traceHeaders(this: Hub): { [key: string]: string } {
     const span = scope.getSpan();
     if (span) {
       return {
-        'sentry-trace': span.toTraceparent(),
+        'beidou-trace': span.toTraceparent(),
       };
     }
   }

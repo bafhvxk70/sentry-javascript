@@ -1,4 +1,4 @@
-import { getCurrentHub, Hub, Scope } from '@sentry/hub';
+import { getCurrentHub, Hub, Scope } from '@beidou/hub';
 import {
   Breadcrumb,
   CaptureContext,
@@ -9,7 +9,7 @@ import {
   Transaction,
   TransactionContext,
   User,
-} from '@sentry/types';
+} from '@beidou/types';
 
 /**
  * This calls a function on the current hub.
@@ -27,7 +27,7 @@ function callOnHub<T>(method: string, ...args: any[]): T {
 }
 
 /**
- * Captures an exception event and sends it to Sentry.
+ * Captures an exception event and sends it to Beidou.
  *
  * @param exception An exception-like object.
  * @returns The generated eventId.
@@ -36,7 +36,7 @@ function callOnHub<T>(method: string, ...args: any[]): T {
 export function captureException(exception: any, captureContext?: CaptureContext): string {
   let syntheticException: Error;
   try {
-    throw new Error('Sentry syntheticException');
+    throw new Error('Beidou syntheticException');
   } catch (exception) {
     syntheticException = exception as Error;
   }
@@ -48,9 +48,9 @@ export function captureException(exception: any, captureContext?: CaptureContext
 }
 
 /**
- * Captures a message event and sends it to Sentry.
+ * Captures a message event and sends it to Beidou.
  *
- * @param message The message to send to Sentry.
+ * @param message The message to send to Beidou.
  * @param level Define the level of the message.
  * @returns The generated eventId.
  */
@@ -75,9 +75,9 @@ export function captureMessage(message: string, captureContext?: CaptureContext 
 }
 
 /**
- * Captures a manually created event and sends it to Sentry.
+ * Captures a manually created event and sends it to Beidou.
  *
- * @param event The event to send to Sentry.
+ * @param event The event to send to Beidou.
  * @returns The generated eventId.
  */
 export function captureEvent(event: Event): string {
@@ -202,7 +202,7 @@ export function _callOnClient(method: string, ...args: any[]): void {
  *
  * The transaction must be finished with a call to its `.finish()` method, at
  * which point the transaction with all its finished child spans will be sent to
- * Sentry.
+ * Beidou.
  *
  * @param context Properties of the new `Transaction`.
  */

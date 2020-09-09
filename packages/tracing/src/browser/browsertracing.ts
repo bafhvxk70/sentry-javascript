@@ -1,6 +1,6 @@
-import { Hub } from '@sentry/hub';
-import { EventProcessor, Integration, Transaction as TransactionType, TransactionContext } from '@sentry/types';
-import { logger } from '@sentry/utils';
+import { Hub } from '@beidou/hub';
+import { EventProcessor, Integration, Transaction as TransactionType, TransactionContext } from '@beidou/types';
+import { logger } from '@beidou/utils';
 
 import { startIdleTransaction } from '../hubextensions';
 import { DEFAULT_IDLE_TIMEOUT, IdleTransaction } from '../idletransaction';
@@ -212,10 +212,10 @@ export class BrowserTracing implements Integration {
 }
 
 /**
- * Gets transaction context from a sentry-trace meta.
+ * Gets transaction context from a beidou-trace meta.
  */
 function getHeaderContext(): Partial<TransactionContext> {
-  const header = getMetaContent('sentry-trace');
+  const header = getMetaContent('beidou-trace');
   if (header) {
     const span = Span.fromTraceparent(header);
     if (span) {

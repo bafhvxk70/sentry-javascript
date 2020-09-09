@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SpanContext } from '@sentry/types';
-import { getGlobalObject, logger } from '@sentry/utils';
+import { SpanContext } from '@beidou/types';
+import { getGlobalObject, logger } from '@beidou/utils';
 
 import { Span } from '../span';
 import { Transaction } from '../transaction';
@@ -18,7 +18,7 @@ export class MetricsInstrumentation {
   public constructor() {
     if (global && global.performance) {
       if (global.performance.mark) {
-        global.performance.mark('sentry-tracing-init');
+        global.performance.mark('beidou-tracing-init');
       }
 
       this._trackLCP();
@@ -40,7 +40,7 @@ export class MetricsInstrumentation {
       this._forceLCP();
       if (this._lcp) {
         // Set the last observed LCP score.
-        transaction.setData('_sentry_web_vitals', { LCP: this._lcp });
+        transaction.setData('_beidou_web_vitals', { LCP: this._lcp });
       }
     }
 
@@ -52,7 +52,7 @@ export class MetricsInstrumentation {
       for (let i = 0; i < document.scripts.length; i++) {
         // We go through all scripts on the page and look for 'data-entry'
         // We remember the name and measure the time between this script finished loading and
-        // our mark 'sentry-tracing-init'
+        // our mark 'beidou-tracing-init'
         if (document.scripts[i].dataset.entry === 'true') {
           entryScriptSrc = document.scripts[i].src;
           break;
@@ -82,7 +82,7 @@ export class MetricsInstrumentation {
           case 'paint':
           case 'measure': {
             const startTimestamp = addMeasureSpans(transaction, entry, startTime, duration, timeOrigin);
-            if (tracingInitMarkStartTime === undefined && entry.name === 'sentry-tracing-init') {
+            if (tracingInitMarkStartTime === undefined && entry.name === 'beidou-tracing-init') {
               tracingInitMarkStartTime = startTimestamp;
             }
             break;

@@ -1,4 +1,4 @@
-import { addInstrumentationHandler, isInstanceOf, isMatchingPattern } from '@sentry/utils';
+import { addInstrumentationHandler, isInstanceOf, isMatchingPattern } from '@beidou/utils';
 
 import { Span } from '../span';
 import { getActiveTransaction } from './utils';
@@ -9,7 +9,7 @@ export const DEFAULT_TRACING_ORIGINS = ['localhost', /^\//];
 export interface RequestInstrumentationOptions {
   /**
    * List of strings / regex where the integration should create Spans out of. Additionally this will be used
-   * to define which outgoing requests the `sentry-trace` header will be attached to.
+   * to define which outgoing requests the `beidou-trace` header will be attached to.
    *
    * Default: ['localhost', /^\//] {@see DEFAULT_TRACING_ORIGINS}
    */
@@ -56,15 +56,15 @@ export interface FetchData {
 /** Data returned from XHR request */
 interface XHRData {
   xhr?: {
-    __sentry_xhr__?: {
+    __beidou_xhr__?: {
       method: string;
       url: string;
       status_code: number;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: Record<string, any>;
     };
-    __sentry_xhr_span_id__?: string;
-    __sentry_own_request__: boolean;
+    __beidou_xhr_span_id__?: string;
+    __beidou_own_request__: boolean;
     setRequestHeader?: (key: string, val: string) => void;
   };
   startTimestamp: number;
@@ -96,7 +96,7 @@ export function registerRequestInstrumentation(_options?: Partial<RequestInstrum
     const origins = tracingOrigins;
     urlMap[url] =
       origins.some((origin: string | RegExp) => isMatchingPattern(url, origin)) &&
-      !isMatchingPattern(url, 'sentry_key');
+      !isMatchingPattern(url, 'beidou_key');
     return urlMap[url];
   };
 
@@ -182,14 +182,14 @@ export function _fetchCallback(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (typeof headers.append === 'function') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        headers.append('sentry-trace', span.toTraceparent());
+        headers.append('beidou-trace', span.toTraceparent());
       } else if (Array.isArray(headers)) {
-        headers = [...headers, ['sentry-trace', span.toTraceparent()]];
+        headers = [...headers, ['beidou-trace', span.toTraceparent()]];
       } else {
-        headers = { ...headers, 'sentry-trace': span.toTraceparent() };
+        headers = { ...headers, 'beidou-trace': span.toTraceparent() };
       }
     } else {
-      headers = { 'sentry-trace': span.toTraceparent() };
+      headers = { 'beidou-trace': span.toTraceparent() };
     }
     options.headers = headers;
   }
@@ -203,22 +203,22 @@ function xhrCallback(
   shouldCreateSpan: (url: string) => boolean,
   spans: Record<string, Span>,
 ): void {
-  if (!handlerData || !handlerData.xhr || !handlerData.xhr.__sentry_xhr__) {
+  if (!handlerData || !handlerData.xhr || !handlerData.xhr.__beidou_xhr__) {
     return;
   }
 
-  const xhr = handlerData.xhr.__sentry_xhr__;
+  const xhr = handlerData.xhr.__beidou_xhr__;
   if (!shouldCreateSpan(xhr.url)) {
     return;
   }
 
-  // We only capture complete, non-sentry requests
-  if (handlerData.xhr.__sentry_own_request__) {
+  // We only capture complete, non-beidou requests
+  if (handlerData.xhr.__beidou_own_request__) {
     return;
   }
 
-  if (handlerData.endTimestamp && handlerData.xhr.__sentry_xhr_span_id__) {
-    const span = spans[handlerData.xhr.__sentry_xhr_span_id__];
+  if (handlerData.endTimestamp && handlerData.xhr.__beidou_xhr_span_id__) {
+    const span = spans[handlerData.xhr.__beidou_xhr_span_id__];
     if (span) {
       span.setData('url', xhr.url);
       span.setData('method', xhr.method);
@@ -226,7 +226,7 @@ function xhrCallback(
       span.finish();
 
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete spans[handlerData.xhr.__sentry_xhr_span_id__];
+      delete spans[handlerData.xhr.__beidou_xhr_span_id__];
     }
     return;
   }
@@ -242,12 +242,12 @@ function xhrCallback(
       op: 'http',
     });
 
-    handlerData.xhr.__sentry_xhr_span_id__ = span.spanId;
-    spans[handlerData.xhr.__sentry_xhr_span_id__] = span;
+    handlerData.xhr.__beidou_xhr_span_id__ = span.spanId;
+    spans[handlerData.xhr.__beidou_xhr_span_id__] = span;
 
     if (handlerData.xhr.setRequestHeader) {
       try {
-        handlerData.xhr.setRequestHeader('sentry-trace', span.toTraceparent());
+        handlerData.xhr.setRequestHeader('beidou-trace', span.toTraceparent());
       } catch (_) {
         // Error: InvalidStateError: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': The object's state must be OPENED.
       }

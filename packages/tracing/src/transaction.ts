@@ -1,6 +1,6 @@
-import { getCurrentHub, Hub } from '@sentry/hub';
-import { TransactionContext } from '@sentry/types';
-import { isInstanceOf, logger } from '@sentry/utils';
+import { getCurrentHub, Hub } from '@beidou/hub';
+import { TransactionContext } from '@beidou/types';
+import { isInstanceOf, logger } from '@beidou/utils';
 
 import { Span as SpanClass, SpanRecorder } from './span';
 
@@ -17,7 +17,7 @@ export class Transaction extends SpanClass {
 
   /**
    * This constructor should never be called manually. Those instrumenting tracing should use
-   * `Sentry.startTransaction()`, and internal methods should use `hub.startTransaction()`.
+   * `Beidou.startTransaction()`, and internal methods should use `hub.startTransaction()`.
    * @internal
    * @hideconstructor
    * @hidden

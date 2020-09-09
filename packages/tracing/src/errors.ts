@@ -1,4 +1,4 @@
-import { addInstrumentationHandler, logger } from '@sentry/utils';
+import { addInstrumentationHandler, logger } from '@beidou/utils';
 
 import { getActiveTransaction } from './browser/utils';
 import { SpanStatus } from './spanstatus';

@@ -1,5 +1,5 @@
-import { BrowserClient } from '@sentry/browser';
-import { Hub, makeMain } from '@sentry/hub';
+import { BrowserClient } from '@beidou/browser';
+import { Hub, makeMain } from '@beidou/hub';
 
 import { Span, SpanStatus, Transaction } from '../../src';
 import { _fetchCallback, FetchData, registerRequestInstrumentation } from '../../src/browser/request';
@@ -24,8 +24,8 @@ beforeAll(() => {
 const mockAddInstrumentationHandler = jest.fn();
 let mockFetchCallback = jest.fn();
 let mockXHRCallback = jest.fn();
-jest.mock('@sentry/utils', () => {
-  const actual = jest.requireActual('@sentry/utils');
+jest.mock('@beidou/utils', () => {
+  const actual = jest.requireActual('@beidou/utils');
   return {
     ...actual,
     addInstrumentationHandler: ({ callback, type }: any) => {

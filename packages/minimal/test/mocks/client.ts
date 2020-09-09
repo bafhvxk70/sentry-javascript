@@ -1,4 +1,4 @@
-import { getCurrentHub } from '@sentry/hub';
+import { getCurrentHub } from '@beidou/hub';
 
 export class TestClient {
   public static instance?: TestClient;
@@ -12,7 +12,7 @@ export class TestClient {
   }
 }
 
-export class TestClient2 {}
+export class TestClient2 { }
 
 export function init(options: Record<string, unknown>): void {
   getCurrentHub().bindClient(new TestClient(options) as any);

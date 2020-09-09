@@ -4,8 +4,8 @@ import { defaultBeforeNavigate, defaultRoutingInstrumentation } from '../../src/
 
 let mockChangeHistory: ({ to, from }: { to: string; from?: string }) => void = () => undefined;
 let addInstrumentationHandlerType: string = '';
-jest.mock('@sentry/utils', () => {
-  const actual = jest.requireActual('@sentry/utils');
+jest.mock('@beidou/utils', () => {
+  const actual = jest.requireActual('@beidou/utils');
   return {
     ...actual,
     addInstrumentationHandler: ({ callback, type }: any): void => {

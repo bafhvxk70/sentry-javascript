@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Integration, Transaction } from '@sentry/types';
-import { logger } from '@sentry/utils';
+import { Integration, Transaction } from '@beidou/types';
+import { logger } from '@beidou/utils';
 
 // Have to manually set types because we are using package-alias
 interface Application {
@@ -16,11 +16,11 @@ interface Response {
 }
 
 /**
- * Internal helper for `__sentry_transaction`
+ * Internal helper for `__beidou_transaction`
  * @hidden
  */
-interface SentryTracingResponse {
-  __sentry_transaction?: Transaction;
+interface BeidouTracingResponse {
+  __beidou_transaction?: Transaction;
 }
 
 /**
@@ -82,8 +82,8 @@ function wrap(fn: Function): RequestHandler | ErrorRequestHandler {
 
   switch (arity) {
     case 2: {
-      return function(this: NodeJS.Global, _req: Request, res: Response & SentryTracingResponse): any {
-        const transaction = res.__sentry_transaction;
+      return function (this: NodeJS.Global, _req: Request, res: Response & BeidouTracingResponse): any {
+        const transaction = res.__beidou_transaction;
         if (transaction) {
           const span = transaction.startChild({
             description: fn.name,
@@ -98,20 +98,20 @@ function wrap(fn: Function): RequestHandler | ErrorRequestHandler {
       };
     }
     case 3: {
-      return function(
+      return function (
         this: NodeJS.Global,
         req: Request,
-        res: Response & SentryTracingResponse,
+        res: Response & BeidouTracingResponse,
         next: NextFunction,
       ): any {
-        const transaction = res.__sentry_transaction;
+        const transaction = res.__beidou_transaction;
         const span =
           transaction &&
           transaction.startChild({
             description: fn.name,
             op: 'middleware',
           });
-        fn.call(this, req, res, function(this: NodeJS.Global): any {
+        fn.call(this, req, res, function (this: NodeJS.Global): any {
           if (span) {
             span.finish();
           }
@@ -121,21 +121,21 @@ function wrap(fn: Function): RequestHandler | ErrorRequestHandler {
       };
     }
     case 4: {
-      return function(
+      return function (
         this: NodeJS.Global,
         err: any,
         req: Request,
-        res: Response & SentryTracingResponse,
+        res: Response & BeidouTracingResponse,
         next: NextFunction,
       ): any {
-        const transaction = res.__sentry_transaction;
+        const transaction = res.__beidou_transaction;
         const span =
           transaction &&
           transaction.startChild({
             description: fn.name,
             op: 'middleware',
           });
-        fn.call(this, err, req, res, function(this: NodeJS.Global): any {
+        fn.call(this, err, req, res, function (this: NodeJS.Global): any {
           if (span) {
             span.finish();
           }
@@ -185,7 +185,7 @@ function wrapUseArgs(args: IArguments): unknown[] {
 function instrumentMiddlewares(app: Application): Application {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const originalAppUse = app.use;
-  app.use = function(): any {
+  app.use = function (): any {
     // eslint-disable-next-line prefer-rest-params
     return originalAppUse.apply(this, wrapUseArgs(arguments));
   };

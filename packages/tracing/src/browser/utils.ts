@@ -1,5 +1,5 @@
-import { getCurrentHub, Hub } from '@sentry/hub';
-import { Transaction } from '@sentry/types';
+import { getCurrentHub, Hub } from '@beidou/hub';
+import { Transaction } from '@beidou/types';
 
 /** Grabs active transaction off scope */
 export function getActiveTransaction<T extends Transaction>(hub: Hub = getCurrentHub()): T | undefined {

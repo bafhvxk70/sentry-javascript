@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
-import { Span as SpanInterface, SpanContext } from '@sentry/types';
-import { dropUndefinedKeys, timestampWithMs, uuid4 } from '@sentry/utils';
+import { Span as SpanInterface, SpanContext } from '@beidou/types';
+import { dropUndefinedKeys, timestampWithMs, uuid4 } from '@beidou/utils';
 
 import { SpanStatus } from './spanstatus';
 
@@ -9,7 +9,7 @@ export const TRACEPARENT_REGEXP = new RegExp(
   '([0-9a-f]{32})?' + // trace_id
   '-?([0-9a-f]{16})?' + // span_id
   '-?([01])?' + // sampled
-    '[ \\t]*$', // whitespace
+  '[ \\t]*$', // whitespace
 );
 
 /**

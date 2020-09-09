@@ -1,5 +1,5 @@
-import { getCurrentHub, getHubFromCarrier, Scope } from '@sentry/hub';
-import { Severity } from '@sentry/types';
+import { getCurrentHub, getHubFromCarrier, Scope } from '@beidou/hub';
+import { Severity } from '@beidou/types';
 
 import {
   _callOnClient,

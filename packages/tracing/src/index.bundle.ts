@@ -11,7 +11,7 @@ export {
   Status,
   Thread,
   User,
-} from '@sentry/types';
+} from '@beidou/types';
 
 export {
   addGlobalEventProcessor,
@@ -32,10 +32,10 @@ export {
   setUser,
   Transports,
   withScope,
-} from '@sentry/browser';
+} from '@beidou/browser';
 
-export { BrowserOptions } from '@sentry/browser';
-export { BrowserClient, ReportDialogOptions } from '@sentry/browser';
+export { BrowserOptions } from '@beidou/browser';
+export { BrowserClient, ReportDialogOptions } from '@beidou/browser';
 export {
   defaultIntegrations,
   forceLoad,
@@ -46,11 +46,11 @@ export {
   flush,
   close,
   wrap,
-} from '@sentry/browser';
-export { SDK_NAME, SDK_VERSION } from '@sentry/browser';
+} from '@beidou/browser';
+export { SDK_NAME, SDK_VERSION } from '@beidou/browser';
 
-import { Integrations as BrowserIntegrations } from '@sentry/browser';
-import { getGlobalObject } from '@sentry/utils';
+import { Integrations as BrowserIntegrations } from '@beidou/browser';
+import { getGlobalObject } from '@beidou/utils';
 
 import { BrowserTracing } from './browser';
 import { addExtensionMethods } from './hubextensions';
@@ -61,8 +61,8 @@ let windowIntegrations = {};
 
 // This block is needed to add compatibility with the integrations packages when used with a CDN
 const _window = getGlobalObject<Window>();
-if (_window.Sentry && _window.Sentry.Integrations) {
-  windowIntegrations = _window.Sentry.Integrations;
+if (_window.Beidou && _window.Beidou.Integrations) {
+  windowIntegrations = _window.Beidou.Integrations;
 }
 
 const INTEGRATIONS = {

@@ -1,5 +1,5 @@
-import { BrowserClient } from '@sentry/browser';
-import { Hub, makeMain } from '@sentry/hub';
+import { BrowserClient } from '@beidou/browser';
+import { Hub, makeMain } from '@beidou/hub';
 import { JSDOM } from 'jsdom';
 
 import { SpanStatus } from '../../src';
@@ -16,8 +16,8 @@ import { DEFAULT_IDLE_TIMEOUT, IdleTransaction } from '../../src/idletransaction
 
 let mockChangeHistory: ({ to, from }: { to: string; from?: string }) => void = () => undefined;
 
-jest.mock('@sentry/utils', () => {
-  const actual = jest.requireActual('@sentry/utils');
+jest.mock('@beidou/utils', () => {
+  const actual = jest.requireActual('@beidou/utils');
   return {
     ...actual,
     addInstrumentationHandler: ({ callback, type }: any): void => {
@@ -28,7 +28,7 @@ jest.mock('@sentry/utils', () => {
   };
 });
 
-const { logger } = jest.requireActual('@sentry/utils');
+const { logger } = jest.requireActual('@beidou/utils');
 const warnSpy = jest.spyOn(logger, 'warn');
 
 beforeAll(() => {
@@ -206,8 +206,8 @@ describe('BrowserTracing', () => {
       });
     });
 
-    it('sets transaction context from sentry-trace header', () => {
-      const name = 'sentry-trace';
+    it('sets transaction context from beidou-trace header', () => {
+      const name = 'beidou-trace';
       const content = '126de09502ae4e0fb26c6967190756a4-b6e54397b12a2a0f-1';
       document.head.innerHTML = `<meta name="${name}" content="${content}">`;
       createBrowserTracing(true, { routingInstrumentation: customRoutingInstrumentation });
@@ -345,7 +345,7 @@ describe('BrowserTracing', () => {
 
 describe('getMeta', () => {
   it('returns a found meta tag contents', () => {
-    const name = 'sentry-trace';
+    const name = 'beidou-trace';
     const content = '126de09502ae4e0fb26c6967190756a4-b6e54397b12a2a0f-1';
     document.head.innerHTML = `<meta name="${name}" content="${content}">`;
 

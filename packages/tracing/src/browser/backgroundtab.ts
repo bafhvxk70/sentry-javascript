@@ -1,4 +1,4 @@
-import { getGlobalObject, logger } from '@sentry/utils';
+import { getGlobalObject, logger } from '@beidou/utils';
 
 import { IdleTransaction } from '../idletransaction';
 import { SpanStatus } from '../spanstatus';

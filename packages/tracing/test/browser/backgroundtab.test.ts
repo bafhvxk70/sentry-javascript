@@ -1,5 +1,5 @@
-import { BrowserClient } from '@sentry/browser';
-import { Hub, makeMain } from '@sentry/hub';
+import { BrowserClient } from '@beidou/browser';
+import { Hub, makeMain } from '@beidou/hub';
 import { JSDOM } from 'jsdom';
 
 import { SpanStatus } from '../../src';

@@ -1,6 +1,6 @@
-import { Hub } from '@sentry/hub';
-import { TransactionContext } from '@sentry/types';
-import { logger, timestampWithMs } from '@sentry/utils';
+import { Hub } from '@beidou/hub';
+import { TransactionContext } from '@beidou/types';
+import { logger, timestampWithMs } from '@beidou/utils';
 
 import { Span, SpanRecorder } from './span';
 import { SpanStatus } from './spanstatus';
