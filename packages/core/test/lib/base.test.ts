@@ -1,6 +1,6 @@
-import { Hub, Scope } from '@sentry/hub';
-import { Event, Severity, Span } from '@sentry/types';
-import { SentryError } from '@sentry/utils';
+import { Hub, Scope } from '@beidou/hub';
+import { Event, Severity, Span } from '@beidou/types';
+import { BeidouError } from '@beidou/utils';
 
 import { TestBackend } from '../mocks/backend';
 import { TestClient } from '../mocks/client';
@@ -11,8 +11,8 @@ const PUBLIC_DSN = 'https://username@domain/123';
 // eslint-disable-next-line no-var
 declare var global: any;
 
-jest.mock('@sentry/utils', () => {
-  const original = jest.requireActual('@sentry/utils');
+jest.mock('@beidou/utils', () => {
+  const original = jest.requireActual('@beidou/utils');
   return {
     ...original,
 
@@ -67,7 +67,7 @@ describe('BaseClient', () => {
 
     test('throws with invalid Dsn', () => {
       expect.assertions(1);
-      expect(() => new TestClient({ dsn: 'abc' })).toThrow(SentryError);
+      expect(() => new TestClient({ dsn: 'abc' })).toThrow(BeidouError);
     });
   });
 
@@ -577,7 +577,7 @@ describe('BaseClient', () => {
       const transaction: Event = {
         contexts: {
           trace: {
-            data: { _sentry_web_vitals: { LCP: { value: 99.9 } } },
+            data: { _beidou_web_vitals: { LCP: { value: 99.9 } } },
             op: 'pageload',
             span_id: 'a3df84a60c2e4e76',
             trace_id: '86f39e84263a4de99c326acab3bfe3bd',
@@ -586,7 +586,7 @@ describe('BaseClient', () => {
         event_id: '972f45b826a248bba98e990878a177e1',
         spans: [
           ({
-            data: { _sentry_extra_metrics: { M1: { value: 1 }, M2: { value: 2 } } },
+            data: { _beidou_extra_metrics: { M1: { value: 1 }, M2: { value: 2 } } },
             description: 'first-paint',
             endTimestamp: 1591603196.637835,
             op: 'paint',

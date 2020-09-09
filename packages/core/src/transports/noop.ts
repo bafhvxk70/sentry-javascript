@@ -1,5 +1,5 @@
-import { Event, Response, Status, Transport } from '@sentry/types';
-import { SyncPromise } from '@sentry/utils';
+import { Event, Response, Status, Transport } from '@beidou/types';
+import { SyncPromise } from '@beidou/utils';
 
 /** Noop transport */
 export class NoopTransport implements Transport {

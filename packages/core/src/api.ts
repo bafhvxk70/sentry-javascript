@@ -1,9 +1,9 @@
-import { DsnLike } from '@sentry/types';
-import { Dsn, urlEncode } from '@sentry/utils';
+import { DsnLike } from '@beidou/types';
+import { Dsn, urlEncode } from '@beidou/utils';
 
 const SENTRY_API_VERSION = '7';
 
-/** Helper class to provide urls to different Sentry endpoints. */
+/** Helper class to provide urls to different Beidou endpoints. */
 export class API {
   /** The internally used Dsn object. */
   private readonly _dsnObject: Dsn;
@@ -17,7 +17,7 @@ export class API {
     return this._dsnObject;
   }
 
-  /** Returns the prefix to construct Sentry ingestion API endpoints. */
+  /** Returns the prefix to construct Beidou ingestion API endpoints. */
   public getBaseApiEndpoint(): string {
     const dsn = this._dsnObject;
     const protocol = dsn.protocol ? `${dsn.protocol}:` : '';
@@ -56,19 +56,19 @@ export class API {
 
   /**
    * Returns an object that can be used in request headers.
-   * This is needed for node and the old /store endpoint in sentry
+   * This is needed for node and the old /store endpoint in beidou
    */
   public getRequestHeaders(clientName: string, clientVersion: string): { [key: string]: string } {
     const dsn = this._dsnObject;
-    const header = [`Sentry sentry_version=${SENTRY_API_VERSION}`];
-    header.push(`sentry_client=${clientName}/${clientVersion}`);
-    header.push(`sentry_key=${dsn.user}`);
+    const header = [`Beidou beidou_version=${SENTRY_API_VERSION}`];
+    header.push(`beidou_client=${clientName}/${clientVersion}`);
+    header.push(`beidou_key=${dsn.user}`);
     if (dsn.pass) {
-      header.push(`sentry_secret=${dsn.pass}`);
+      header.push(`beidou_secret=${dsn.pass}`);
     }
     return {
       'Content-Type': 'application/json',
-      'X-Sentry-Auth': header.join(', '),
+      'X-Beidou-Auth': header.join(', '),
     };
   }
 
@@ -124,9 +124,9 @@ export class API {
     const dsn = this._dsnObject;
     const auth = {
       // We send only the minimum set of required information. See
-      // https://github.com/getsentry/sentry-javascript/issues/2572.
-      sentry_key: dsn.user,
-      sentry_version: SENTRY_API_VERSION,
+      // https://github.com/getbeidou/beidou-javascript/issues/2572.
+      beidou_key: dsn.user,
+      beidou_version: SENTRY_API_VERSION,
     };
     return urlEncode(auth);
   }

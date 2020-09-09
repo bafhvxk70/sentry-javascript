@@ -1,29 +1,29 @@
-import { Event } from '@sentry/types';
-import { timestampWithMs } from '@sentry/utils';
+import { Event } from '@beidou/types';
+import { timestampWithMs } from '@beidou/utils';
 
 import { API } from './api';
 
 /** A generic client request. */
-export interface SentryRequest {
+export interface BeidouRequest {
   body: string;
   url: string;
-  // headers would contain auth & content-type headers for @sentry/node, but
-  // since @sentry/browser avoids custom headers to prevent CORS preflight
-  // requests, we can use the same approach for @sentry/browser and @sentry/node
+  // headers would contain auth & content-type headers for @beidou/node, but
+  // since @beidou/browser avoids custom headers to prevent CORS preflight
+  // requests, we can use the same approach for @beidou/browser and @beidou/node
   // for simplicity -- no headers involved.
   // headers: { [key: string]: string };
 }
 
-/** Creates a SentryRequest from an event. */
-export function eventToSentryRequest(event: Event, api: API): SentryRequest {
+/** Creates a BeidouRequest from an event. */
+export function eventToBeidouRequest(event: Event, api: API): BeidouRequest {
   const useEnvelope = event.type === 'transaction';
 
-  const req: SentryRequest = {
+  const req: BeidouRequest = {
     body: JSON.stringify(event),
     url: useEnvelope ? api.getEnvelopeEndpointWithUrlEncodedAuth() : api.getStoreEndpointWithUrlEncodedAuth(),
   };
 
-  // https://develop.sentry.dev/sdk/envelopes/
+  // https://develop.beidou.dev/sdk/envelopes/
 
   // Since we don't need to manipulate envelopes nor store them, there is no
   // exported concept of an Envelope with operations including serialization and

@@ -1,6 +1,6 @@
-import { addGlobalEventProcessor, getCurrentHub } from '@sentry/hub';
-import { Integration, Options } from '@sentry/types';
-import { logger } from '@sentry/utils';
+import { addGlobalEventProcessor, getCurrentHub } from '@beidou/hub';
+import { Integration, Options } from '@beidou/types';
+import { logger } from '@beidou/utils';
 
 export const installedIntegrations: string[] = [];
 

@@ -1,4 +1,4 @@
-import { Event } from '@sentry/types';
+import { Event } from '@beidou/types';
 
 import { getCurrentHub, Hub, Scope } from '../src';
 
@@ -208,7 +208,7 @@ describe('Hub', () => {
       // @ts-ignore Says mock object is type unknown
       expect(spy.mock.calls[0][2].syntheticException).toBeInstanceOf(Error);
       // @ts-ignore Says mock object is type unknown
-      expect(spy.mock.calls[0][2].syntheticException.message).toBe('Sentry syntheticException');
+      expect(spy.mock.calls[0][2].syntheticException.message).toBe('Beidou syntheticException');
     });
   });
 

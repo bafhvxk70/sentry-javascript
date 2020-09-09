@@ -1,6 +1,6 @@
-import { getCurrentHub } from '@sentry/hub';
-import { configureScope } from '@sentry/minimal';
-import { Event, Integration } from '@sentry/types';
+import { getCurrentHub } from '@beidou/hub';
+import { configureScope } from '@beidou/minimal';
+import { Event, Integration } from '@beidou/types';
 
 export class TestIntegration implements Integration {
   public static id: string = 'TestIntegration';

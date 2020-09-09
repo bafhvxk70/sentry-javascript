@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
-import { Scope } from '@sentry/hub';
-import { Client, Event, EventHint, Integration, IntegrationClass, Options, Severity } from '@sentry/types';
+import { Scope } from '@beidou/hub';
+import { Client, Event, EventHint, Integration, IntegrationClass, Options, Severity } from '@beidou/types';
 import {
   Dsn,
   isPrimitive,
@@ -11,7 +11,7 @@ import {
   timestampWithMs,
   truncate,
   uuid4,
-} from '@sentry/utils';
+} from '@beidou/utils';
 
 import { Backend, BackendClass } from './basebackend';
 import { IntegrationIndex, setupIntegrations } from './integration';
@@ -26,8 +26,8 @@ import { IntegrationIndex, setupIntegrations } from './integration';
  *
  * If a Dsn is specified in the options, it will be parsed and stored. Use
  * {@link Client.getDsn} to retrieve the Dsn at any moment. In case the Dsn is
- * invalid, the constructor will throw a {@link SentryException}. Note that
- * without a valid Dsn, the SDK will not send any events to Sentry.
+ * invalid, the constructor will throw a {@link BeidouException}. Note that
+ * without a valid Dsn, the SDK will not send any events to Beidou.
  *
  * Before sending an event via the backend, it is passed through
  * {@link BaseClient.prepareEvent} to add SDK information and scope data
@@ -386,21 +386,21 @@ export abstract class BaseClient<B extends Backend, O extends Options> implement
 
   /**
    * Tells the backend to send this event
-   * @param event The Sentry event to send
+   * @param event The Beidou event to send
    */
   protected _sendEvent(event: Event): void {
     this._getBackend().sendEvent(event);
   }
 
   /**
-   * Processes an event (either error or message) and sends it to Sentry.
+   * Processes an event (either error or message) and sends it to Beidou.
    *
    * This also adds breadcrumbs and context information to the event. However,
    * platform specific meta data (such as the User's IP address) must be added
    * by the SDK implementor.
    *
    *
-   * @param event The event to send to Sentry.
+   * @param event The event to send to Beidou.
    * @param hint May contain additional information about the original exception.
    * @param scope A scope containing event metadata.
    * @returns A SyncPromise that resolves with the event or rejects in case event was/will not be send.
@@ -432,7 +432,7 @@ export abstract class BaseClient<B extends Backend, O extends Options> implement
           let finalEvent: Event | null = prepared;
 
           const isInternalException =
-            hint && hint.data && (hint.data as { [key: string]: unknown }).__sentry__ === true;
+            hint && hint.data && (hint.data as { [key: string]: unknown }).__beidou__ === true;
           // We skip beforeSend in case of transactions
           if (isInternalException || !beforeSend || isTransaction) {
             this._sendEvent(finalEvent);
@@ -462,7 +462,7 @@ export abstract class BaseClient<B extends Backend, O extends Options> implement
         .then(null, reason => {
           this.captureException(reason, {
             data: {
-              __sentry__: true,
+              __beidou__: true,
             },
             originalException: reason as Error,
           });

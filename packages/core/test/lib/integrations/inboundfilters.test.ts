@@ -9,7 +9,7 @@ describe('InboundFilters', () => {
 
   describe('shouldDropEvent', () => {
     it('should drop when error is internal one', () => {
-      inboundFilters._isSentryError = () => true;
+      inboundFilters._isBeidouError = () => true;
       expect(inboundFilters._shouldDropEvent({}, inboundFilters._mergeOptions())).toBe(true);
     });
 
@@ -54,7 +54,7 @@ describe('InboundFilters', () => {
     });
   });
 
-  describe('isSentryError', () => {
+  describe('isBeidouError', () => {
     const messageEvent = {
       message: 'captureMessage',
     };
@@ -68,11 +68,11 @@ describe('InboundFilters', () => {
         ],
       },
     };
-    const sentryEvent = {
+    const beidouEvent = {
       exception: {
         values: [
           {
-            type: 'SentryError',
+            type: 'BeidouError',
             value: 'something something server connection',
           },
         ],
@@ -80,18 +80,18 @@ describe('InboundFilters', () => {
     };
 
     it('should work as expected', () => {
-      expect(inboundFilters._isSentryError(messageEvent, inboundFilters._mergeOptions())).toBe(false);
-      expect(inboundFilters._isSentryError(exceptionEvent, inboundFilters._mergeOptions())).toBe(false);
-      expect(inboundFilters._isSentryError(sentryEvent, inboundFilters._mergeOptions())).toBe(true);
+      expect(inboundFilters._isBeidouError(messageEvent, inboundFilters._mergeOptions())).toBe(false);
+      expect(inboundFilters._isBeidouError(exceptionEvent, inboundFilters._mergeOptions())).toBe(false);
+      expect(inboundFilters._isBeidouError(beidouEvent, inboundFilters._mergeOptions())).toBe(true);
     });
 
     it('should be configurable', () => {
       inboundFilters = new InboundFilters({
         ignoreInternal: false,
       });
-      expect(inboundFilters._isSentryError(messageEvent, inboundFilters._mergeOptions())).toBe(false);
-      expect(inboundFilters._isSentryError(exceptionEvent, inboundFilters._mergeOptions())).toBe(false);
-      expect(inboundFilters._isSentryError(sentryEvent, inboundFilters._mergeOptions())).toBe(false);
+      expect(inboundFilters._isBeidouError(messageEvent, inboundFilters._mergeOptions())).toBe(false);
+      expect(inboundFilters._isBeidouError(exceptionEvent, inboundFilters._mergeOptions())).toBe(false);
+      expect(inboundFilters._isBeidouError(beidouEvent, inboundFilters._mergeOptions())).toBe(false);
     });
   });
 
@@ -255,7 +255,7 @@ describe('InboundFilters', () => {
     const messageEvent = {
       message: 'wat',
       stacktrace: {
-        // Frames are always in the reverse order, as this is how Sentry expect them to come.
+        // Frames are always in the reverse order, as this is how Beidou expect them to come.
         // Frame that crashed is the last one, the one from awesome-analytics
         frames: [
           { filename: 'https://our-side.com/js/bundle.js' },
@@ -269,7 +269,7 @@ describe('InboundFilters', () => {
         values: [
           {
             stacktrace: {
-              // Frames are always in the reverse order, as this is how Sentry expect them to come.
+              // Frames are always in the reverse order, as this is how Beidou expect them to come.
               // Frame that crashed is the last one, the one from awesome-analytics
               frames: [
                 { filename: 'https://our-side.com/js/bundle.js' },

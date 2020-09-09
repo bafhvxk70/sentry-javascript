@@ -12,12 +12,12 @@ export {
   setTags,
   setUser,
   withScope,
-} from '@sentry/minimal';
-export { addGlobalEventProcessor, getCurrentHub, getHubFromCarrier, Hub, makeMain, Scope } from '@sentry/hub';
+} from '@beidou/minimal';
+export { addGlobalEventProcessor, getCurrentHub, getHubFromCarrier, Hub, makeMain, Scope } from '@beidou/hub';
 export { API } from './api';
 export { BaseClient } from './baseclient';
 export { BackendClass, BaseBackend } from './basebackend';
-export { eventToSentryRequest, SentryRequest } from './request';
+export { eventToBeidouRequest, BeidouRequest } from './request';
 export { initAndBind, ClientClass } from './sdk';
 export { NoopTransport } from './transports/noop';
 

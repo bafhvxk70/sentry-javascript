@@ -16,8 +16,8 @@ import {
   Transaction,
   TransactionContext,
   User,
-} from '@sentry/types';
-import { consoleSandbox, getGlobalObject, isNodeEnv, logger, timestampWithMs, uuid4 } from '@sentry/utils';
+} from '@beidou/types';
+import { consoleSandbox, getGlobalObject, isNodeEnv, logger, timestampWithMs, uuid4 } from '@beidou/utils';
 
 import { Carrier, Layer } from './interfaces';
 import { Scope } from './scope';
@@ -156,7 +156,7 @@ export class Hub implements HubInterface {
     if (!hint) {
       let syntheticException: Error;
       try {
-        throw new Error('Sentry syntheticException');
+        throw new Error('Beidou syntheticException');
       } catch (exception) {
         syntheticException = exception as Error;
       }
@@ -402,9 +402,9 @@ export class Hub implements HubInterface {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _callExtensionMethod<T>(method: string, ...args: any[]): T {
     const carrier = getMainCarrier();
-    const sentry = carrier.__SENTRY__;
-    if (sentry && sentry.extensions && typeof sentry.extensions[method] === 'function') {
-      return sentry.extensions[method].apply(this, args);
+    const beidou = carrier.__SENTRY__;
+    if (beidou && beidou.extensions && typeof beidou.extensions[method] === 'function') {
+      return beidou.extensions[method].apply(this, args);
     }
     logger.warn(`Extension method ${method} couldn't be found, doing nothing.`);
   }
@@ -464,12 +464,12 @@ function getHubFromActiveDomain(registry: Carrier): Hub {
   try {
     const property = 'domain';
     const carrier = getMainCarrier();
-    const sentry = carrier.__SENTRY__;
-    if (!sentry || !sentry.extensions || !sentry.extensions[property]) {
+    const beidou = carrier.__SENTRY__;
+    if (!beidou || !beidou.extensions || !beidou.extensions[property]) {
       return getHubFromCarrier(registry);
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const domain = sentry.extensions[property] as any;
+    const domain = beidou.extensions[property] as any;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const activeDomain = domain.active;
 

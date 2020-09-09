@@ -13,8 +13,8 @@ import {
   Span,
   Transaction,
   User,
-} from '@sentry/types';
-import { getGlobalObject, isPlainObject, isThenable, SyncPromise, timestampWithMs } from '@sentry/utils';
+} from '@beidou/types';
+import { getGlobalObject, isPlainObject, isThenable, SyncPromise, timestampWithMs } from '@beidou/utils';
 
 /**
  * Holds additional event information. {@link Scope.applyToEvent} will be

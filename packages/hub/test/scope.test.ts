@@ -1,5 +1,5 @@
-import { Event, EventHint, Severity } from '@sentry/types';
-import { getGlobalObject } from '@sentry/utils';
+import { Event, EventHint, Severity } from '@beidou/types';
+import { getGlobalObject } from '@beidou/utils';
 
 import { addGlobalEventProcessor, Scope } from '../src';
 

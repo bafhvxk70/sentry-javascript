@@ -1,10 +1,10 @@
 {
-  "name": "@sentry/hub",
+  "name": "@beidou/hub",
   "version": "1.0.0",
-  "description": "Sentry hub which handles global state managment.",
-  "repository": "git://github.com/getsentry/sentry-javascript.git",
-  "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/hub",
-  "author": "Sentry",
+  "description": "Beidou hub which handles global state managment.",
+  "repository": "git://github.com/getbeidou/beidou-javascript.git",
+  "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/hub",
+  "author": "Beidou",
   "license": "BSD-3-Clause",
   "engines": {
     "node": ">=6"
@@ -16,12 +16,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@sentry/types": "5.22.3",
-    "@sentry/utils": "^1.0.0",
+    "@beidou/types": "5.22.3",
+    "@beidou/utils": "^1.0.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@sentry-internal/eslint-config-sdk": "^1.0.0",
+    "@beidou-internal/eslint-config-sdk": "^1.0.0",
     "eslint": "7.6.0",
     "jest": "^24.7.1",
     "npm-run-all": "^4.1.2",

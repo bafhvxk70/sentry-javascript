@@ -1,4 +1,4 @@
-import { Integration } from '@sentry/types';
+import { Integration } from '@beidou/types';
 
 import { getIntegrationsToSetup } from '../../src/integration';
 

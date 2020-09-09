@@ -1,5 +1,5 @@
 /**
- * @fileoverview eslint plugins for Sentry SDKs
+ * @fileoverview eslint plugins for Beidou SDKs
  * @author Abhijeet Prasad
  */
 'use strict';

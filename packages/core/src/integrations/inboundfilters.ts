@@ -1,6 +1,6 @@
-import { addGlobalEventProcessor, getCurrentHub } from '@sentry/hub';
-import { Event, Integration } from '@sentry/types';
-import { getEventDescription, isMatchingPattern, logger } from '@sentry/utils';
+import { addGlobalEventProcessor, getCurrentHub } from '@beidou/hub';
+import { Event, Integration } from '@beidou/types';
+import { getEventDescription, isMatchingPattern, logger } from '@beidou/utils';
 
 // "Script error." is hard coded into browsers for errors that it can't read.
 // this is the result of a script being pulled in from an external domain and CORS.
@@ -31,7 +31,7 @@ export class InboundFilters implements Integration {
    */
   public name: string = InboundFilters.id;
 
-  public constructor(private readonly _options: Partial<InboundFiltersOptions> = {}) {}
+  public constructor(private readonly _options: Partial<InboundFiltersOptions> = {}) { }
 
   /**
    * @inheritDoc
@@ -57,8 +57,8 @@ export class InboundFilters implements Integration {
 
   /** JSDoc */
   private _shouldDropEvent(event: Event, options: Partial<InboundFiltersOptions>): boolean {
-    if (this._isSentryError(event, options)) {
-      logger.warn(`Event dropped due to being internal Sentry Error.\nEvent: ${getEventDescription(event)}`);
+    if (this._isBeidouError(event, options)) {
+      logger.warn(`Event dropped due to being internal Beidou Error.\nEvent: ${getEventDescription(event)}`);
       return true;
     }
     if (this._isIgnoredError(event, options)) {
@@ -87,7 +87,7 @@ export class InboundFilters implements Integration {
   }
 
   /** JSDoc */
-  private _isSentryError(event: Event, options: Partial<InboundFiltersOptions>): boolean {
+  private _isBeidouError(event: Event, options: Partial<InboundFiltersOptions>): boolean {
     if (!options.ignoreInternal) {
       return false;
     }
@@ -98,7 +98,7 @@ export class InboundFilters implements Integration {
           event.exception &&
           event.exception.values &&
           event.exception.values[0] &&
-          event.exception.values[0].type === 'SentryError') ||
+          event.exception.values[0].type === 'BeidouError') ||
         false
       );
     } catch (_oO) {

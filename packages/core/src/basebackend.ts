@@ -1,10 +1,10 @@
-import { Event, EventHint, Options, Severity, Transport } from '@sentry/types';
-import { logger, SentryError } from '@sentry/utils';
+import { Event, EventHint, Options, Severity, Transport } from '@beidou/types';
+import { logger, BeidouError } from '@beidou/utils';
 
 import { NoopTransport } from './transports/noop';
 
 /**
- * Internal platform-dependent Sentry SDK Backend.
+ * Internal platform-dependent Beidou SDK Backend.
  *
  * While {@link Client} contains business logic specific to an SDK, the
  * Backend offers platform specific implementations for low-level operations.
@@ -31,7 +31,7 @@ export interface Backend {
   /** Creates a {@link Event} from a plain message. */
   eventFromMessage(message: string, level?: Severity, hint?: EventHint): PromiseLike<Event>;
 
-  /** Submits the event to Sentry */
+  /** Submits the event to Beidou */
   sendEvent(event: Event): void;
 
   /**
@@ -74,14 +74,14 @@ export abstract class BaseBackend<O extends Options> implements Backend {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
   public eventFromException(_exception: any, _hint?: EventHint): PromiseLike<Event> {
-    throw new SentryError('Backend has to implement `eventFromException` method');
+    throw new BeidouError('Backend has to implement `eventFromException` method');
   }
 
   /**
    * @inheritDoc
    */
   public eventFromMessage(_message: string, _level?: Severity, _hint?: EventHint): PromiseLike<Event> {
-    throw new SentryError('Backend has to implement `eventFromMessage` method');
+    throw new BeidouError('Backend has to implement `eventFromMessage` method');
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Integration, WrappedFunction } from '@sentry/types';
+import { Integration, WrappedFunction } from '@beidou/types';
 
 let originalFunctionToString: () => void;
 
@@ -22,8 +22,8 @@ export class FunctionToString implements Integration {
     originalFunctionToString = Function.prototype.toString;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Function.prototype.toString = function(this: WrappedFunction, ...args: any[]): string {
-      const context = this.__sentry_original__ || this;
+    Function.prototype.toString = function (this: WrappedFunction, ...args: any[]): string {
+      const context = this.__beidou_original__ || this;
       return originalFunctionToString.apply(context, args);
     };
   }
