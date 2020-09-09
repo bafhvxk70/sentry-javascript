@@ -1,6 +1,6 @@
 {
   "name": "@beidou1/types",
-  "version": "1.0.0",
+  "version": "1.0.2-alpha.0",
   "description": "Types for all Beidou JavaScript SDKs",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/types",

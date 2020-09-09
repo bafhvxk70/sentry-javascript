@@ -1,6 +1,6 @@
 {
   "name": "@beidou1/minimal",
-  "version": "1.0.1-alpha.0",
+  "version": "1.0.2-alpha.0",
   "description": "Beidou minimal library that can be used in other packages",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/minimal",

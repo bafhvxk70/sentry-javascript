@@ -1,6 +1,6 @@
 {
   "name": "@beidou1/core",
-  "version": "1.0.0",
+  "version": "1.0.2-alpha.0",
   "description": "Base implementation for all Beidou JavaScript SDKs",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/core",
@@ -18,12 +18,12 @@
   "dependencies": {
     "@beidou1/hub": "1.0.0",
     "@beidou1/minimal": "1.0.0",
-    "@beidou1/types": "1.0.0",
-    "@beidou1/utils": "1.0.0",
+    "@beidou1/types": "^1.0.2-alpha.0",
+    "@beidou1/utils": "^1.0.2-alpha.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@beidou1-internal/eslint-config-sdk": "1.0.0",
+    "@beidou1-internal/eslint-config-sdk": "^1.0.2-alpha.0",
     "eslint": "7.6.0",
     "jest": "^24.7.1",
     "npm-run-all": "^4.1.2",
