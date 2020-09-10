@@ -1,6 +1,6 @@
 {
-  "name": "@beidou/tracing",
-  "version": "1.0.1-alpha.0",
+  "name": "@beidou1/tracing",
+  "version": "1.0.2-alpha.0",
   "description": "Extensions for Beidou AM",
   "repository": "git://github.com/getbeidou/beidou-javascript.git",
   "homepage": "https://github.com/getbeidou/beidou-javascript/tree/master/packages/tracing",
